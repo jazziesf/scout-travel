@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css?family=Dancing+Script|Gloria+Hallelujah|Kaushan+Script|Berkshire+Swash|ZCOOL+XiaoWei');
+
+.navbar-brand  {
+  font-size: 2em !important;
+  font-family: 'Berkshire Swash', cursive;
+}
+.facebook {
+  height: 40px;
+  color: black;
+
+}
+.nav-body {
+  padding-top: 50px;
+}
+
+body {
+  padding-top: .02%;
+}
+
+/* max less than or equal to */
+@media screen and (max-width: 992px) {
+  body { padding-top: .05%; }
+}
+
+@media screen and (min-width: 680px) {
+  body { padding-top: 1%; }
+}
+
+@media screen and (max-width: 600px) {
+  body { padding-top: 7%; }
+}
+
+
+body { padding-top: 40px; }
+
+.search {
+  font-family: 'Berkshire Swash', cursive;
+  font-weight: bold;
+}
+
+#local:hover {
+  text-decoration: none;
+  color: #CC0000;
+}
+
+.dropdown-item > a {
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-item > a:hover {
+  text-decoration: none;
+  color: #CC0000;
+}

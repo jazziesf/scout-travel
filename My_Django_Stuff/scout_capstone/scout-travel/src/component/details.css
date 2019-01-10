@@ -1,0 +1,67 @@
+.details-container {
+  background-color: #F9F9F9;
+  padding-top: 2em;
+  padding-bottom: 2em;
+  border-radius: 10px;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.restuarnt {
+  color: black;
+  font-family: 'Berkshire Swash', cursive;
+  text-align: left;
+  font-size: 1.5em;
+  margin-bottom: 0;
+  padding-right: 5px;
+  z-index: auto;
+}
+
+.city {
+  font-family: 'ZCOOL XiaoWei', serif;
+  color:black;
+  text-align: left;
+  padding-bottom: .75em;
+  border-bottom: 1px solid grey;
+  margin-bottom: .5em;
+}
+
+.pin {
+  z-index: 1;
+}
+
+.detail-user {
+  float: right;
+}
+
+.icons-details {
+  padding-top: 3px;
+  padding-bottom: 1.35em;
+}
+
+@media screen and (max-width: 767px) {
+  .pin { margin-right: 25px; }
+}
+
+@media screen and (max-width: 501px) {
+  .pin { margin-right: 10px; }
+}
+
+@media screen and (max-width: 480px) {
+  .pin { padding-right: 15px; }
+}
+
+.description {
+  color: black;
+  text-align: left;
+  font-family: arial;
+}
+
+.likes-details {
+  padding-top: 8px;
+  margin-bottom: 8px;
+  color: grey;
+  text-align: left;
+  padding-left: 6px;
+  font-family: 'ZCOOL XiaoWei', serif, arial;
+}
