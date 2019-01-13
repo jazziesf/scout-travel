@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 const PostCard = (props) => {
 
     return (
-      <div className="col-xs-12 col-lg-4 col-sm-6 img-fluid img-responsive">
+      <div className="col-xs-12 col-md-4 col-sm-6 img-fluid img-responsive">
         <div className="container">
           <img src={props.image} alt={props.business} />
           <sub className="bottom-left">{props.city}, {props.state}</sub>
@@ -20,7 +20,7 @@ const PostCard = (props) => {
         </div>
         <p className="likes">{props.likes} likes</p>
         <p className="location">{props.business}</p>
-        <p className="user">Posted by @{props.name}</p>
+        <p className="user">Posted by @{props.user}</p>
       </div>
     )
   }
@@ -28,11 +28,11 @@ const PostCard = (props) => {
   PostCard.propTypes = {
     id: PropTypes.number,
     pin: PropTypes.object,
-    image: PropTypes.string,
-    company: PropTypes.string,
-    name: PropTypes.string,
-    city: PropTypes.string,
-    state: PropTypes.string,
+    // image: PropTypes.string,
+    // company: PropTypes.string,
+    // name: PropTypes.string,
+    // city: PropTypes.string,
+    // state: PropTypes.string,
     heartFilledSrc: PropTypes.string,
     likes: PropTypes.number,
     commentCallback: PropTypes.func,

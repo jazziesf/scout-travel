@@ -19,7 +19,7 @@ class NewPinForm extends Component {
       loaded: 0,
       tags: [1],
       categories: ["1"],
-      user: 3
+      user: 2
     };
   }
 
@@ -31,8 +31,8 @@ class NewPinForm extends Component {
       state: '',
       image: null,
       tags: [1],
-      categories: ["1"],
-      user: 3
+      categories: [1],
+      // user: 2
     });
   }
 
@@ -49,9 +49,11 @@ class NewPinForm extends Component {
   addPin = (newPin) => {
 
     const form = this.form.current;
+    console.log(form);
     const data = new FormData(form)
+    console.log(data);
 
-      axios.post(URL, data)
+      axios.post(URL, data, { headers: {Authorization: "Token 77aa860f8e821f138992f0d64f70ef9086778be3" }  })
         .then((response) => {
           console.log(response);
           const myNewPin = response.data;
@@ -118,8 +120,6 @@ class NewPinForm extends Component {
           <div className="form-group new">
             <label htmlFor="exampleInputFile">Upload Image</label>
             <input type="file" name="image" className="form-control-file" id="exampleInputFile" aria-describedby="fileHelp"  accept="image/*" onChange={this.handleselectedFile}/>
-            <button onClick={this.handleUpload}>Upload</button>
-            <div> {Math.round(this.state.loaded,2) } %</div>
           </div>
 
           <div className="form-group new">

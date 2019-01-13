@@ -4,7 +4,8 @@ import PinPostCard from './PinPostCard';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const URL = "http://127.0.0.1:8000/board/"
+const URL = "http://127.0.0.1:8000/api/board/board/1/"
+// const URL = `http://127.0.0.1:8000/api/board/board/${this.state.user}/`
 
 class MyPinsList extends Component {
       constructor(props) {
@@ -19,17 +20,21 @@ class MyPinsList extends Component {
       }
 
     componentDidMount() {
-        axios.get(URL)
+        axios.get(URL, { headers: {Authorization: 'Token 77aa860f8e821f138992f0d64f70ef9086778be3' }})
+        // axios.get(URL, { headers: {Authorization: this.props.token }})
           .then((response) => {
-            const pins = response.data.objects.map((pin) => {
+            const pins = response.data.pin.map((pi) => {
+              console.log(pi);
               const newPin = {
-                ...pin,
-                id: pin.id,
-                images: pin.images,
-                details: pin.details,
-                location: pin.location,
-                company: pin.company,
-                likes: pin.likes,
+                ...pi,
+                id: pi.id,
+                image: pi.image,
+                details: pi.details,
+                city: pi.city,
+                state: pi.state,
+                business: pi.business,
+                user: pi.user,
+                likes: pi.likes,
               };
             return newPin;
             })
@@ -48,69 +53,45 @@ class MyPinsList extends Component {
           })
       }
 
-      // pinToBoard = (newPin) => {
-      //   console.log(newPin);
-      //     const apiPayload = {
-      //       ...newPin,
-      //       image: newPin.image,
-      //       location: newPin.location,
-      //       company: newPin.company,
-      //       details: newPin.details,
-      //     }
-      //     axios.post(URL, apiPayload)
-      //       .then((response) => {
-      //         console.log(response);
-      //         const myNewPin = response.data;
-      //
-      //         myNewPin.images = [myNewPin.img];
-      //         newPin.id = myNewPin.id
-      //
-      //         const { myPinList, masterList } =  this.state;
-      //         newPin.id = myNewPin.id
-      //
-      //         masterList.push(newPin);
-      //
-      //         if (myPinList !== masterList)
-      //           myPinList.push(newPin);
-      //
-      //         this.stateState({
-      //           myPinList,
-      //           masterList,
-      //         });
-      //         // What should we do when we know the post request worked?
-      //       })
-      //       .catch((error) => {
-      //         // What should we do when we know the post request failed?
-      //         this.setState({
-      //           errorMessage: `Failure ${error.message}`,
-      //         })
-      //       });
-      //   }
 
+      incrementLikes = (pinId) => {
+        const url = `http://127.0.0.1:8000/api/pin/pin/${pinId}/`
+        const { pinList } = this.state
 
-    incrementLikes = (pinId) => {
-      //add PinId when you add backend
-      // const liked = this.state.liked; when you toggle like
-      const { myPinList } = this.state
-
-      const selectedPin = myPinList.find((pin) => {
+        const selectedPin = pinList.find((pin) => {
           return pin.id === pinId;
-      });
+        });
 
-          if (selectedPin) {
-            selectedPin.likes += 1;
-            this.setState({
-              myPinList: myPinList,
-            });
-          }
-       }
+        if (selectedPin) {
+          selectedPin.likes += 1;
+          this.setState({
+            pinList: pinList,
+          });
+        }
+        const apiPayload = {
+          likes: selectedPin.likes
+        }
+
+        axios.patch(url, apiPayload)
+        .then((response) => {
+          console.log(response);
+        })
+        // What should we do when we know the post request worked?
+
+        .catch((error) => {
+          // What should we do when we know the post request failed?
+          this.setState({
+            errorMessage: `Failure ${error.message}`,
+          })
+        });
+      }
 
     render() {
       const heart = this.state.liked ? "https://image.flaticon.com/icons/svg/69/69904.svg" : "https://image.flaticon.com/icons/svg/126/126471.svg"
 
-        const myPinList = this.state.myPinList.map((pin) => {
+        const myPinList = this.state.myPinList.map((pin, i) => {
         return <PinPostCard
-              key={pin.id}
+              key={i}
 
               likesCountCallback={() => this.incrementLikes(pin.id)}
               pinToBoardCallback={() => this.pinToBoard(pin)}
@@ -141,6 +122,7 @@ MyPinsList.propTypes = {
   detailsPageCallback: PropTypes.func,
   incrementLikes: PropTypes.func,
   detailsLikesCountCallback: PropTypes.func,
+  token: PropTypes.string
   // pinToBoardCallback: PropTypes.func,
 };
 

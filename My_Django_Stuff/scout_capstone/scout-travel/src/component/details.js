@@ -1,8 +1,48 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './details.css'
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
-const Details = (props) => {
+class Details extends Component {
+      constructor(props) {
+        super(props);
+
+        this.state = {
+          likesCount: [],
+          liked: false,
+          pinList: [],
+          masterList: [],
+        }
+      }
+
+    incrementLikes = (pinId) => {
+      const { pinList } = this.state
+      const url = `http://127.0.0.1:8000/api/pin/pin/${pinId.id}/`
+
+        this.setState({
+          pinList: pinList,
+        });
+
+      pinId.likes += 1
+      const apiPayload = {
+        likes: pinId.likes
+      }
+
+      axios.patch(url, apiPayload)
+      .then((response) => {
+        console.log(response);
+      })
+      // What should we do when we know the post request worked?
+
+      .catch((error) => {
+        // What should we do when we know the post request failed?
+        this.setState({
+          errorMessage: `Failure ${error.message}`,
+        })
+      });
+    }
+
+render() {
   return (
     <div className="details-container">
 
@@ -12,28 +52,24 @@ const Details = (props) => {
         </div>
         <div className="row">
           <div className="col-12 col-md-6 img-fluid img-responsive">
-            <img src={props.pinSelected.image} alt="Snow" className="image-fix"/>
+            <img src={this.props.pinSelected.image} alt="Snow" className="image-fix"/>
           </div>
           <div className="col-12 col-md-6">
             <div className="container">
-              <p className="restuarnt">{props.pinSelected.business}</p>
+              <p className="restuarnt">{this.props.pinSelected.business}</p>
 
-              <p className="city">{props.pinSelected.city}, {props.pinSelected.state} </p>
+              <p className="city">{this.props.pinSelected.city}, {this.props.pinSelected.state} </p>
 
               <div className="icons-details" >
               {/* // this.props.likesCountCallback(props.pinSelected.id) */}
 
-                <img src={props.heartFilledSrc} alt="like button" className="heart" onClick={props.likesCountCallback}/>
-                <img src="https://image.flaticon.com/icons/svg/54/54761.svg" alt="comment box" className="comment" onClick={props.commentCallback} />
-                <img src="https://image.flaticon.com/icons/svg/684/684809.svg" alt="Snow" className="map" />
-                <p className="user detail-user">Posted by @{props.pinSelected.user}</p>
-              {/*  <p className="user detail-user">@{props.pinSelected.username}</p> */}
-
+                <img src={this.props.heartFilledSrc} alt="like button" className="heart" onClick={() => this.incrementLikes(this.props.pinSelected)}/>
+                <img src="https://image.flaticon.com/icons/svg/54/54761.svg" alt="comment box" className="comment" onClick={this.props.commentCallback} />
+                <p className="user detail-user">Posted by @{this.props.pinSelected.user.name}</p>
               </div>
-                <p className="likes-details">{props.pinSelected.likes} likes</p>
-            {/*  <p className="likes-details">{props.pinSelected.numberLikes}15 likes</p> */}
+                <p className="likes-details">{this.props.pinSelected.likes} likes</p>
               <div className="scroll">
-                <p className="description">{props.pinSelected.details}</p>
+                <p className="description">{this.props.pinSelected.details}</p>
               </div>
             </div>
           </div>
@@ -41,10 +77,13 @@ const Details = (props) => {
       </div>
     </div>
     )
+  }
 }
 
+
+
 Details.propTypes = {
-  // likesCountCallback: PropTypes.func,
+  likesCountCallback: PropTypes.func,
   commentCallback: PropTypes.func,
   pinSelected: PropTypes.object,
   heartFilledSrc: PropTypes.string,

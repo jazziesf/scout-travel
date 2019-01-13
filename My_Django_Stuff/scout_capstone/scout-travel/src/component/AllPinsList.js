@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import PinPostCard from './PinPostCard';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 const URL = "http://127.0.0.1:8000/api/pin/pin/"
 
 class AllPinsList extends Component {
@@ -19,9 +18,9 @@ class AllPinsList extends Component {
   }
 
   componentDidMount() {
-    axios.get(URL)
+    axios.get(URL, { headers: {Authorization: 'Token 77aa860f8e821f138992f0d64f70ef9086778be3' }})
+    // axios.get(URL, { headers: {Authorization: this.props.token }})
     .then((response) => {
-      console.log(response.data);
       const pins = response.data.map((pin) => {
         const newPin = {
           ...pin,
@@ -32,7 +31,7 @@ class AllPinsList extends Component {
           state: pin.state,
           business: pin.business,
           user: pin.user,
-          // likes: pin.likes,
+          likes: pin.likes,
         };
         return newPin;
       })
@@ -53,39 +52,14 @@ class AllPinsList extends Component {
 
   pinToBoard = (newPin) => {
     console.log(newPin);
-
-    console.log("im the new pin for board");
     const apiPayload = {
-      ...newPin,
-      id: newPin.id,
-      image: newPin.image,
-      details: newPin.details,
-      city: newPin.city,
-      state: newPin.state,
-      business: newPin.business,
-      name: newPin.name
+      pin: newPin
     }
-    const url = "http://127.0.0.1:8000/board/"
-    axios.post(url, apiPayload)
+    const url = `http://127.0.0.1:8000/api/board/board/1/`
+    axios.patch(url, apiPayload, { headers: {Authorization: 'Token 77aa860f8e821f138992f0d64f70ef9086778be3' }})
+    // axios.patch(url, apiPayload, { headers: {authorization: this.props.token }})
     .then((response) => {
-      console.log(response);
-      const myNewPin = response.data;
-
-      myNewPin.images = [myNewPin.img];
-      newPin.id = myNewPin.id
-
-      const { pinList, masterList } =  this.state;
-      newPin.id = myNewPin.id
-
-      masterList.push(newPin);
-
-      if (pinList !== masterList)
-      pinList.push(newPin);
-
-      this.stateState({
-        pinList,
-        masterList,
-      });
+      console.log(response)
       // What should we do when we know the post request worked?
     })
     .catch((error) => {
@@ -98,14 +72,8 @@ class AllPinsList extends Component {
 
 
   incrementLikes = (pinId) => {
-    console.log("In increment likes");
-    //add PinId when you add backend
-    // const liked = this.state.liked; when you toggle like
     const url = URL + `${pinId}/`
-
     const { pinList } = this.state
-
-    console.log("Before, index of interesting pin is", pinList.findIndex(pin => pin.id === pinId));
 
     const selectedPin = pinList.find((pin) => {
       return pin.id === pinId;
@@ -117,10 +85,6 @@ class AllPinsList extends Component {
         pinList: pinList,
       });
     }
-
-    console.log("After, index of interesting pin is", pinList.findIndex(pin => pin.id === pinId));
-
-
     const apiPayload = {
       likes: selectedPin.likes
     }
@@ -176,6 +140,7 @@ AllPinsList.propTypes = {
   incrementLikes: PropTypes.func,
   detailsLikesCountCallback: PropTypes.func,
   pinToBoardCallback: PropTypes.func,
+  token: PropTypes.string
 };
 
 export default AllPinsList;

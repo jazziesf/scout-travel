@@ -4,6 +4,11 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
+// import { configureStore } from 'redux-starter-kit'
+// import reducer from './reducer'
+
+// const store = configureStore({ reducer })
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

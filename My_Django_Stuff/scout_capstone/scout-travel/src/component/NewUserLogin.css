@@ -1,0 +1,51 @@
+.form-div {
+  background: #F9F9F9;
+  border-radius: 2%;
+  padding-bottom: 45px;
+  padding-top: 20px;
+  margin-right: 14%;
+  margin-left:14%
+}
+
+@media screen and (max-width: 500px) {
+  .form-div {
+    margin-left: 4%;
+    margin-right: 4%; }
+}
+
+.new-user-form {
+  padding-left: 18%;
+  padding-right: 18%;
+  font-family: 'ZCOOL XiaoWei', serif;
+}
+
+.login {
+  font-family: 'Berkshire Swash', cursive;
+}
+
+@media screen and (max-width: 500px) {
+  .new-user-form {
+    padding-left: 10%;
+    padding-right: 10%; }
+}
+
+.form-group {
+  text-align: left;
+}
+
+.new {
+  margin-bottom: 16px;
+}
+
+.new-user-form--submit {
+  float: right;
+  font-family: 'Berkshire Swash', cursive;
+}
+
+.new-user {
+  margin-bottom: 20px;
+}
+
+.donut {
+  height: 16px;
+}

@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import './App.css';
 import Navbar from './component/Navbar'
-import Card from './component/card'
+// import Card from './component/card'
 import Details from './component/details'
 import AllPinsList from './component/AllPinsList'
 import NewPinForm from './component/NewPinForm'
 import MyPinsList from './component/MyBoardPins'
-import LogIn from './component/LogIn'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import NewUserLogin from './component/NewUserLogin'
+import ReturningUser from './component/ReturningUser'
 
+
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import axios from 'axios'
+
+const URL = "http://127.0.0.1:8000/api/pin/pin/"
 
 class App extends Component {
   constructor(props) {
@@ -21,6 +26,8 @@ class App extends Component {
       currentPin: undefined,
       likesCount: 0,
       liked: false,
+      token: this.props.token,
+      likes: 0,
     };
   }
 
@@ -93,18 +100,42 @@ class App extends Component {
     });
   };
 
-  onlikesCount = () => {
-    console.log("like count clicked");
-    const liked = this.state.liked
-    this.setState({
-      likesCount: this.state.likesCount + 1,
-      liked: !liked
+
+  incrementLikes = (pinId) => {
+
+    const { pinList } = this.state
+    const selectedPin = pinList.find((pin) => {
+      console.log(pin);
+      return pin.id === pinId;
+    });
+
+    if (selectedPin) {
+      selectedPin.likes += 1;
+      console.log(selectedPin);
+      this.setState({
+        pinList: pinList,
+      });
+    }
+    const apiPayload = {
+      likes: selectedPin.likes
+    }
+    const url = URL + `${pinId}/`
+    axios.patch(url, apiPayload)
+    .then((response) => {
+      console.log(response);
     })
+    // What should we do when we know the post request worked?
+
+    .catch((error) => {
+      // What should we do when we know the post request failed?
+      this.setState({
+        errorMessage: `Failure ${error.message}`,
+      })
+    });
   }
 
 
   detailsPageCallback = (pin) => {
-    console.log(pin);
     this.setState({
       currentPin: pin,
       isRevealed: true
@@ -130,23 +161,19 @@ class App extends Component {
             dropdownClassName={dropdown1}
             dropdownShow={dropdown2}
             expandDropdown={dropdown3}
-            login={<Link to="/login" >Log-In</Link>}
-            myScoutList={<Link to="/myscoutlist" >My Scout List</Link>}
-            linkAddPin={<Link to="/addscoutpin" >Add to Scout's Community</Link>}
+            login={<Link to="/scoutlogin" >Log-In</Link>}
+            signUp={<Link to="/newuser">Become an Ambassador</Link>}
+            myScoutList={<Link to="/myscoutboard" >My Scout Board</Link>}
+            linkAddPin={<Link to="/addscoutpin" >Post to Scout</Link>}
           />
-
-        { !this.state.isRevealed && <Card
-          // likesCount={this.onlikesCount}
-          numberLikes={this.state.likes}
-          heartFilledSrc={heart}
-          /> }
 
         { this.state.isRevealed &&
           <Details
           pinSelected={this.state.currentPin}
-          // likesCountCallback={this.props.likesCountCallback}
+          likesCountCallback={(pinId) => this.incrementLikes(pinId)}
           commentCallback={()=> this.commentView}
           heartFilledSrc={heart}
+          token={this.state.token}
           /> }
 
 
@@ -157,27 +184,37 @@ class App extends Component {
           /> }
 
 
-        { this.state.isRevealed &&  <Route path="/myscoutlist"
-        render={() =>
+          <Route path="/myscoutboard"
+          render={() =>
           <MyPinsList
           // likesCountCallback={this.likesCountCallback}
           selectPinCallback={(pinId) => this.onSelectPin(pinId)} //check APPMOCKFINAL this one should work with pin.id
           detailsPageCallback={this.detailsPageCallback} //this may not work beacuse you need an id
+          token={this.state.token}
           />
         }
-        /> }
+        />
 
-        <Route path="/login"
+        <Route path="/newuser"
           render={() =>
-            <LogIn
+            <NewUserLogin token={this.props.token}
             />
           }
         />
+
+        <Route path="/scoutlogin"
+         render={() =>
+           <ReturningUser token={this.props.token}
+           />
+         }
+         />
+
 
         <Route path="/addscoutpin"
         render={() =>
           <NewPinForm
           addPinCallback={this.addPin}
+          token={this.state.token}
           />
         }
         />

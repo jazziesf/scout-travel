@@ -52,3 +52,44 @@ body { padding-top: 40px; }
   text-decoration: none;
   color: #CC0000;
 }
+
+.nav-link {
+  margin: 0;
+  padding-top: 16px;
+  text-decoration: none;
+  color: black;
+}
+
+.nav-link:hover {
+  text-decoration: none;
+  cursor: pointer;
+  color: #CC0000;
+}
+
+.nav-link > a{
+  text-decoration: none;
+  cursor: pointer;
+  color: black;
+}
+
+#navbarDropdown {
+  text-decoration: none;
+  cursor: pointer;
+  color: black;
+}
+
+#navbarDropdown:hover {
+  text-decoration: none;
+  cursor: pointer;
+  color: #CC0000;
+}
+
+.nav-link:hover > a{
+  text-decoration: none;
+  cursor: pointer;
+  color: #CC0000;
+}
+
+.donut-nav {
+  height: 20px;
+}
