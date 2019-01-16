@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import PinPostCard from './PinPostCard';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import StackGrid from "react-stack-grid";
 
-const URL = "http://127.0.0.1:8000/api/board/board/1/"
-// const URL = `http://127.0.0.1:8000/api/board/board/${this.state.user}/`
+
+const userId = window.localStorage.getItem('id')
+const URL = `http://127.0.0.1:8000/api/board/board/${userId}/`
 
 class MyPinsList extends Component {
       constructor(props) {
@@ -20,11 +22,9 @@ class MyPinsList extends Component {
       }
 
     componentDidMount() {
-        axios.get(URL, { headers: {Authorization: 'Token 77aa860f8e821f138992f0d64f70ef9086778be3' }})
-        // axios.get(URL, { headers: {Authorization: this.props.token }})
+        axios.get(URL, { headers: { Authorization: `Token ${document.cookie}`}})
           .then((response) => {
             const pins = response.data.pin.map((pi) => {
-              console.log(pi);
               const newPin = {
                 ...pi,
                 id: pi.id,
@@ -33,12 +33,12 @@ class MyPinsList extends Component {
                 city: pi.city,
                 state: pi.state,
                 business: pi.business,
+                dish: pi.dish,
                 user: pi.user,
                 likes: pi.likes,
               };
             return newPin;
             })
-            // .filter((pin, index) => index < 10);
 
             this.setState({
               myPinList: pins,
@@ -56,23 +56,23 @@ class MyPinsList extends Component {
 
       incrementLikes = (pinId) => {
         const url = `http://127.0.0.1:8000/api/pin/pin/${pinId}/`
-        const { pinList } = this.state
+        const { myPinList } = this.state
 
-        const selectedPin = pinList.find((pin) => {
+        const selectedPin = myPinList.find((pin) => {
           return pin.id === pinId;
         });
 
         if (selectedPin) {
           selectedPin.likes += 1;
           this.setState({
-            pinList: pinList,
+            myPinList: myPinList,
           });
         }
         const apiPayload = {
           likes: selectedPin.likes
         }
 
-        axios.patch(url, apiPayload)
+        axios.patch(url, apiPayload, { headers: { Authorization: `Token ${document.cookie}`}})
         .then((response) => {
           console.log(response);
         })
@@ -97,7 +97,7 @@ class MyPinsList extends Component {
               pinToBoardCallback={() => this.pinToBoard(pin)}
 
               detailsLikeCallback={() => this.incrementLikes(pin.id)}
-
+              // detailsPageCallback={() => this.detailsPageCallback(pin)}
               detailsPageCallback={() => this.props.detailsPageCallback(pin)}
               heartFilledSrc={heart}
 
@@ -108,9 +108,9 @@ class MyPinsList extends Component {
 
   return (
       <div className="body">
-        <div className="row">
-          {myPinList}
-        </div>
+          <StackGrid columnWidth={400} >
+            {myPinList}
+          </StackGrid>
       </div>
     )
   }

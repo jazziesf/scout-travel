@@ -30,3 +30,14 @@
     transform: rotate(360deg);
   }
 }
+
+.logout {
+  margin-bottom: 0px;
+}
+
+.logout:hover {
+  margin-bottom: 0px;
+  text-decoration: none;
+  color: #CC0000;
+  cursor: pointer;
+}

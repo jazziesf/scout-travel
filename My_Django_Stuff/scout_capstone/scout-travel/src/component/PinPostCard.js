@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 const PostCard = (props) => {
 
     return (
-      <div className="col-xs-12 col-md-4 col-sm-6 img-fluid img-responsive">
+      // <div className="col-xs-12 col-md-4 col-sm-6 img-fluid img-responsive">
+      <div >
+
         <div className="container">
           <img src={props.image} alt={props.business} />
           <sub className="bottom-left">{props.city}, {props.state}</sub>
@@ -19,8 +21,9 @@ const PostCard = (props) => {
           <img src="https://image.flaticon.com/icons/svg/149/149403.svg" alt="details icon" className="details" onClick={props.detailsPageCallback}/>
         </div>
         <p className="likes">{props.likes} likes</p>
+        <p className="dish">{props.dish}</p>
         <p className="location">{props.business}</p>
-        <p className="user">Posted by @{props.user}</p>
+
       </div>
     )
   }

@@ -5,9 +5,10 @@
   border-radius: 10px;
   margin-left: 1em;
   margin-right: 1em;
+  margin-bottom: 1.25em;
 }
 
-.restuarnt {
+.dish-detail {
   color: black;
   font-family: 'Berkshire Swash', cursive;
   text-align: left;
@@ -15,6 +16,15 @@
   margin-bottom: 0;
   padding-right: 5px;
   z-index: auto;
+}
+
+.restuarnt {
+  font-family: 'ZCOOL XiaoWei', serif;
+  color: black;
+  text-align: left;
+  margin-bottom: 0;
+  font-size: 1.25em;
+  font-weight: 500;
 }
 
 .city {
@@ -37,18 +47,6 @@
 .icons-details {
   padding-top: 3px;
   padding-bottom: 1.35em;
-}
-
-@media screen and (max-width: 767px) {
-  .pin { margin-right: 25px; }
-}
-
-@media screen and (max-width: 501px) {
-  .pin { margin-right: 10px; }
-}
-
-@media screen and (max-width: 480px) {
-  .pin { padding-right: 15px; }
 }
 
 .description {

@@ -67,7 +67,7 @@ class App extends Component {
           company: newPin.company,
           value: newPin.value,
         }
-        axios.post(URL, apiPayload)
+        axios.post(URL, apiPayload, { headers: { Authorization: `Token ${document.cookie}`}})
           .then((response) => {
             const myNewPin = response.data;
 

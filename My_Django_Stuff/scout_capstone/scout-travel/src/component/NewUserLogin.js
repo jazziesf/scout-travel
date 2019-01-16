@@ -13,7 +13,9 @@ class NewUserLogin extends Component {
     this.state = {
       name: '',
       token:'',
-      value:''
+      value:'',
+      email: '',
+      password: '',
     };
   }
 
@@ -40,11 +42,12 @@ class NewUserLogin extends Component {
     const url = "http://127.0.0.1:8000/api/user/token/"
     axios.post(url, apiPayload)
       .then((response) => {
-        const authToken = response.data.token
 
         this.setState({
-          token: authToken
+          token: response.data.token
         })
+        document.cookie = `${response.data.token}`;
+        this.props.loggedInCallback(response.data.token)
       })
       .catch((error) => {
         // What should we do when we know the post request failed?
@@ -53,22 +56,6 @@ class NewUserLogin extends Component {
         })
       })
     }
-
-  // getUserName = (token) => {
-  //   const url = "http://127.0.0.1:8000/api/user/me/"
-  //   axios.get(url, token)
-  //     .then((response) => {
-  //       this.setState({
-  //         name: response.name
-  //       })
-  //     })
-  //     .catch((error) => {
-  //       // What should we do when we know the post request failed?
-  //       this.setState({
-  //         errorMessage: `Failure ${error.message}`,
-  //       })
-  //     })
-  // }
 
   addNewUser = (newUser) => {
       const apiPayload = {
@@ -94,13 +81,11 @@ class NewUserLogin extends Component {
         });
     }
 
-
-
   onSubmit = (event) => {
     event.preventDefault();
-    const { name } = this.state;
+    const { name, password, username } = this.state;
 
-    if ( name === '' ) return;
+    if ( name === '' || password === '' || username === '' ) return;
 
     this.addNewUser(this.state);
 
@@ -117,7 +102,7 @@ class NewUserLogin extends Component {
         <form onSubmit={this.onSubmit} name="new-user-form" id="new-user-form" className="new-user-form">
           <div className="form-group">
             <label htmlFor="usr">Email</label>
-            <input type="text" className="form-control" name="email" placeholder="nosh@gmail.com" onChange={this.onFormChange} />
+            <input type="text" required className="form-control" name="email" placeholder="nosh@gmail.com" onChange={this.onFormChange} value={this.state.email}/>
           </div>
 
           <div className="form-group">
@@ -127,7 +112,7 @@ class NewUserLogin extends Component {
 
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">Password</label>
-            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" name='password' onChange={this.onFormChange} />
+            <input type="password" required className="form-control" id="exampleInputPassword1" placeholder="Password" name='password' onChange={this.onFormChange} value={this.state.password}/>
           </div>
 
           <button type="submit" className="btn btn-danger new-user-form--submit">Submit</button>
@@ -140,7 +125,7 @@ class NewUserLogin extends Component {
 }
 
 NewUserLogin.propTypes = {
-  token: PropTypes.string,
+  loggedInCallback: PropTypes.func,
   //must add is requred to this form for prop just od it when your ready
 };
 

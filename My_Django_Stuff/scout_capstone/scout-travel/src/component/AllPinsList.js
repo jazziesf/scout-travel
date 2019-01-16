@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import PinPostCard from './PinPostCard';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import StackGrid from "react-stack-grid";
 const URL = "http://127.0.0.1:8000/api/pin/pin/"
 
 class AllPinsList extends Component {
@@ -14,12 +15,12 @@ class AllPinsList extends Component {
       liked: false,
       pinList: [],
       masterList: [],
+      addPinList: [],
     }
   }
 
   componentDidMount() {
-    axios.get(URL, { headers: {Authorization: 'Token 77aa860f8e821f138992f0d64f70ef9086778be3' }})
-    // axios.get(URL, { headers: {Authorization: this.props.token }})
+    axios.get(URL, { headers: { Authorization: `Token ${document.cookie}`}})
     .then((response) => {
       const pins = response.data.map((pin) => {
         const newPin = {
@@ -29,14 +30,13 @@ class AllPinsList extends Component {
           details: pin.details,
           city: pin.city,
           state: pin.state,
+          dish: pin.dish,
           business: pin.business,
-          user: pin.user,
           likes: pin.likes,
         };
         return newPin;
       })
       // .filter((pin, index) => index < 10);
-
       this.setState({
         pinList: pins,
         masterList: pins,
@@ -50,25 +50,71 @@ class AllPinsList extends Component {
     })
   }
 
-  pinToBoard = (newPin) => {
-    console.log(newPin);
-    const apiPayload = {
-      pin: newPin
-    }
-    const url = `http://127.0.0.1:8000/api/board/board/1/`
-    axios.patch(url, apiPayload, { headers: {Authorization: 'Token 77aa860f8e821f138992f0d64f70ef9086778be3' }})
-    // axios.patch(url, apiPayload, { headers: {authorization: this.props.token }})
-    .then((response) => {
-      console.log(response)
-      // What should we do when we know the post request worked?
-    })
-    .catch((error) => {
-      // What should we do when we know the post request failed?
-      this.setState({
-        errorMessage: `Failure ${error.message}`,
+  pinToBoard = (pin) => {
+    const userId = parseInt(window.localStorage.getItem('id'));
+    const URL = `http://127.0.0.1:8000/api/board/board/${userId}/pins/${pin.id}/add/`
+
+   //  axios.get(boardurl, { headers: { Authorization: `Token ${document.cookie}`}})
+   //    .then((response) => {
+   //      const pins = response.data.pin.map((pi) => {
+   //        const newPin = {
+   //          ...pi,
+   //          id: pi.id,
+   //          image: pi.image,
+   //          details: pi.details,
+   //          city: pi.city,
+   //          state: pi.state,
+   //          business: pi.business,
+   //          dish: pi.dish,
+   //          user: pi.user,
+   //          likes: pi.likes,
+   //        };
+   //      return newPin;
+   //      })
+   //      this.setState({
+   //        addPinList: [{newPin, ...pins}],
+   //      })
+   //      console.log(this.state.addPinList);
+   //      console.log("im at the add pin to board");
+   //      this.addPintoBoard(this.state.addPinList)
+   //    })
+   //    .catch((error) => {
+   //      console.log(error.message);
+   //      this.setState({
+   //        error: error.message,
+   //      })
+   //    })
+   // }
+
+    // addPintoBoard = (pinList) => {
+    //   console.log("im in addpin to bard");
+    //   console.log(pinList);
+      // const patchUrl = `http://127.0.0.1:8000/api/board/board/${userId}/`
+      // const newpin = {...pin}
+      // console.log(pin.image.constructor.name)
+      // console.log(pin.image)
+      const apiPayload = {
+        pin: [pin],
+        user: userId,
+        // pin: pinList,
+        // pin: {...newPin},
+        // pin
+
+        // user: userId
+      }
+
+      axios.post(URL, apiPayload, { headers: {Authorization: `Token ${document.cookie}`}})
+      .then((response) => {
+        console.log(response)
+        // What should we do when we know the post request worked?
       })
-    });
-  }
+      .catch((error) => {
+        // What should we do when we know the post request failed?
+        this.setState({
+          errorMessage: `Failure ${error.message}`,
+        })
+      });
+    }
 
 
   incrementLikes = (pinId) => {
@@ -125,9 +171,9 @@ class AllPinsList extends Component {
 
     return (
       <div className="body">
-        <div className="row">
-        {pinList}
-        </div>
+          <StackGrid columnWidth={400} >
+              {pinList}
+          </StackGrid>
       </div>
     )
   }

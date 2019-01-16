@@ -4,7 +4,8 @@
   padding-bottom: 45px;
   padding-top: 20px;
   margin-right: 14%;
-  margin-left:14%
+  margin-left:14%;
+  margin-bottom: 50px;
 }
 
 @media screen and (max-width: 500px) {
@@ -27,6 +28,7 @@
 
 .form-group {
   text-align: left;
+  color: black;
 }
 
 .new {
@@ -36,4 +38,8 @@
 .new-pin-form--submit {
   float: right;
   font-family: 'Berkshire Swash', cursive;
+}
+
+#exampleInputFile {
+  font-family: 'Berkshire Swash', cursive, sans-serif;
 }

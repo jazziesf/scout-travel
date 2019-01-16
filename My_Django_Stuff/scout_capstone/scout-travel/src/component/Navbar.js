@@ -15,14 +15,14 @@ return (
         <div className={props.collapseNavbar} id="navbarSupportedContent" >
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <p className="nav-link" href="scout">Home</p>
+              <a className="nav-link" id="home" href="scout">Home</a>
             </li>
             <li className="nav-item">
-              <p className="nav-link" href="log-In">{props.signUp}</p>
+              <p className="nav-link" href="log-In" onClick={props.closeNav}>{props.signUp}</p>
             </li>
             <li className={props.dropdownClassName} >
               <p className="nav-link dropdown-toggle" href="scout" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded={props.expandDropdown} onClick={props.dropdown}>
-                Scout Ambassadors
+                {props.scoutAmbassador}
               </p>
               <div className={props.dropdownShow} aria-labelledby="navbarDropdown">
                 <p className="dropdown-item" onClick={props.closeNav}>{props.login}</p>
@@ -35,7 +35,7 @@ return (
           </ul>
           <form className="form-inline my-2 my-lg-0">
             <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-            <button className="btn btn-outline-danger my-2 my-sm-0 search" type="submit">Search</button>
+            <button className="btn btn-outline-danger my-2 my-sm-0 search" onClick={props.searchQuery} type="submit">Search</button>
           </form>
         </div>
       </nav>

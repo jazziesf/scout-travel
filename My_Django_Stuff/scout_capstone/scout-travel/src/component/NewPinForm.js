@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './NewPinForm.css'
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import axios from 'axios'
 
 const URL = "http://127.0.0.1:8000/api/pin/pin/"
@@ -32,6 +32,7 @@ class NewPinForm extends Component {
       image: null,
       tags: [1],
       categories: [1],
+      dish: ''
       // user: 2
     });
   }
@@ -53,12 +54,12 @@ class NewPinForm extends Component {
     const data = new FormData(form)
     console.log(data);
 
-      axios.post(URL, data, { headers: {Authorization: "Token 77aa860f8e821f138992f0d64f70ef9086778be3" }  })
+      axios.post(URL, data, { headers: { Authorization: `Token ${document.cookie}`}})
         .then((response) => {
-          console.log(response);
+          this.props.successfullRequestCallback()
           const myNewPin = response.data;
-
           const { pinList, masterList } =  this.state;
+
           newPin.id = myNewPin.id
 
           masterList.push(newPin);
@@ -90,9 +91,9 @@ class NewPinForm extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    const { business, city, details, state, image } = this.state;
+    const { business, city, details, state, image, dish } = this.state;
 
-    if ( business === '' || city === '' || details === '' || state === ''|| image === '') return;
+    if ( business === '' || city === '' || details === '' || state === ''|| image === '' || dish === '') return;
 
     this.addPin(this.state);
     this.resetState();
@@ -101,10 +102,16 @@ class NewPinForm extends Component {
   render() {
     return (
       <div className="form-div">
+      <h3 className='login'>Sc<img src="https://image.flaticon.com/icons/svg/214/214298.svg" alt="donut icon" className="donut"/>ut N<img src="https://image.flaticon.com/icons/svg/761/761952.svg" alt="donut icon" className="donut"/>sh Pin</h3>
         <form onSubmit={this.onSubmit} ref={this.form} name="new-pin-form" id="new-pin-form" className="new-pin-form" encType='multipart/form-data' >
           <div className="form-group new">
+            <label htmlFor="usr">What the Dish?</label>
+            <input type="text" className="form-control" id="usr" name="dish" placeholder="Homemade Sweet Chipotle Sauce" onChange={this.onFormChange} value={this.state.dish} />
+          </div>
+
+          <div className="form-group new">
             <label htmlFor="usr">Restauarnt's Name</label>
-            <input type="text" className="form-control" id="usr" name="business" placeholder="Bongo's Cuban Cafe" onChange={this.onFormChange} value={this.state.company} />
+            <input type="text" className="form-control" id="usr" name="business" placeholder="Bongo's Cuban Cafe" onChange={this.onFormChange} value={this.state.business} />
           </div>
 
           <div className="form-group new">
@@ -119,7 +126,7 @@ class NewPinForm extends Component {
 
           <div className="form-group new">
             <label htmlFor="exampleInputFile">Upload Image</label>
-            <input type="file" name="image" className="form-control-file" id="exampleInputFile" aria-describedby="fileHelp"  accept="image/*" onChange={this.handleselectedFile}/>
+            <input type="file" name="image" className="form-control-file btn btn-danger" id="exampleInputFile" aria-describedby="fileHelp"  accept="image/*" onChange={this.handleselectedFile}/>
           </div>
 
           <div className="form-group new">
@@ -139,7 +146,7 @@ class NewPinForm extends Component {
 }
 
 NewPinForm.propTypes = {
-  // addPinCallback: PropTypes.func,
+  successfullRequestCallback: PropTypes.func,
   //must add is requred to this form for prop just od it when your ready
 };
 

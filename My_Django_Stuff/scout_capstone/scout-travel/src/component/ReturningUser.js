@@ -11,13 +11,16 @@ class ReturningUser extends Component {
 
     this.state = {
       name: '',
-      token:''
+      token:'',
+      password: '',
+      loggedIn: false,
     };
   }
 
   resetState = () => {
     this.setState({
       password: '',
+      email: '',
     });
   }
 
@@ -32,11 +35,16 @@ class ReturningUser extends Component {
 
   getUserName = (token) => {
     const url = "http://127.0.0.1:8000/api/user/me/"
-    axios.get(url, token)
+    axios.get(url, { headers: {Authorization: `Token ${document.cookie}`}})
     .then((response) => {
+      window.localStorage.setItem('id', response.data.id)
+
       this.setState({
-        name: response.name
+        name: response.data.name
       })
+      this.nameCallback(response.data.name)
+
+      this.resetState()
     })
     .catch((error) => {
       this.setState({
@@ -53,11 +61,15 @@ class ReturningUser extends Component {
     }
     axios.post(URL, apiPayload)
     .then((response) => {
+
       this.setState({
-        token: response.data.token
+        token: response.data.token,
+        // loggedIn: true,
       })
-      this.getUserName(this.state.token)
-      // What should we do when we know the post request worked?
+
+      document.cookie = `${response.data.token}`;
+      this.props.loggedInCallback(response.data.token)
+      this.getUserName(response.data.token)
     })
     .catch((error) => {
       // What should we do when we know the post request failed?
@@ -76,6 +88,7 @@ class ReturningUser extends Component {
     this.loginUser(this.state);
   }
 
+
   render() {
     return (
       <div className="form-div new-user">
@@ -83,12 +96,12 @@ class ReturningUser extends Component {
         <form onSubmit={this.onSubmit} name="new-user-form" id="new-user-form" className="new-user-form">
           <div className="form-group">
             <label htmlFor="usr">Email</label>
-            <input type="text" className="form-control"name="email" placeholder="nosh@gmail.com" onChange={this.onFormChange} value={this.state.email} />
+            <input type="text" required className="form-control" name="email" placeholder="nosh@gmail.com" onChange={this.onFormChange} value={this.state.email} />
           </div>
 
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">Password</label>
-            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" name='password' onChange={this.onFormChange} value={this.state.password}/>
+            <input type="password" required className="form-control" id="exampleInputPassword1" placeholder="Password" name='password' onChange={this.onFormChange} value={this.state.password}/>
           </div>
 
           <button type="submit" className="btn btn-danger new-user-form--submit">Submit</button>
@@ -101,7 +114,8 @@ class ReturningUser extends Component {
 }
 
 ReturningUser.propTypes = {
-  token: PropTypes.string,
+  loggedInCallback: PropTypes.func,
+  nameCallback: PropTypes.func,
 };
 
 export default ReturningUser;

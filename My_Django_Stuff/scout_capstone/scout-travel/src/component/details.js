@@ -28,7 +28,7 @@ class Details extends Component {
         likes: pinId.likes
       }
 
-      axios.patch(url, apiPayload)
+      axios.patch(url, apiPayload, { headers: { Authorization: `Token ${document.cookie}`}})
       .then((response) => {
         console.log(response);
       })
@@ -45,24 +45,20 @@ class Details extends Component {
 render() {
   return (
     <div className="details-container">
-
       <div className="container fixed">
-        <div className="pin">
-          <button className="top-right btn btn-danger pin">Pin</button>
-        </div>
         <div className="row">
           <div className="col-12 col-md-6 img-fluid img-responsive">
             <img src={this.props.pinSelected.image} alt="Snow" className="image-fix"/>
+           <button className="top-right btn btn-danger pin">Pin</button>
           </div>
           <div className="col-12 col-md-6">
             <div className="container">
+              <p className="dish-detail">{this.props.pinSelected.dish}</p>
               <p className="restuarnt">{this.props.pinSelected.business}</p>
 
               <p className="city">{this.props.pinSelected.city}, {this.props.pinSelected.state} </p>
 
               <div className="icons-details" >
-              {/* // this.props.likesCountCallback(props.pinSelected.id) */}
-
                 <img src={this.props.heartFilledSrc} alt="like button" className="heart" onClick={() => this.incrementLikes(this.props.pinSelected)}/>
                 <img src="https://image.flaticon.com/icons/svg/54/54761.svg" alt="comment box" className="comment" onClick={this.props.commentCallback} />
                 <p className="user detail-user">Posted by @{this.props.pinSelected.user.name}</p>

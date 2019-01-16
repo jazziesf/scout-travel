@@ -34,7 +34,7 @@ body {
 body { padding-top: 40px; }
 
 .search {
-  font-family: 'Berkshire Swash', cursive;
+  font-family: 'Berkshire Swash', cursive, sans-serif;
   font-weight: bold;
 }
 
@@ -43,9 +43,18 @@ body { padding-top: 40px; }
   color: #CC0000;
 }
 
+.dropdown-item {
+  text-decoration: none;
+  color: black;
+  font-family: 'ZCOOL XiaoWei', sans-serif;
+  font-weight: 550;
+}
+
 .dropdown-item > a {
   text-decoration: none;
   color: black;
+  font-family: 'ZCOOL XiaoWei', sans-serif;
+  font-weight: 550;
 }
 
 .dropdown-item > a:hover {
@@ -58,6 +67,9 @@ body { padding-top: 40px; }
   padding-top: 16px;
   text-decoration: none;
   color: black;
+  font-size: 1.15em;
+  font-family: 'ZCOOL XiaoWei', sans-serif;
+  font-weight: ;
 }
 
 .nav-link:hover {
@@ -84,7 +96,7 @@ body { padding-top: 40px; }
   color: #CC0000;
 }
 
-.nav-link:hover > a{
+.nav-link:hover > a {
   text-decoration: none;
   cursor: pointer;
   color: #CC0000;
@@ -92,4 +104,10 @@ body { padding-top: 40px; }
 
 .donut-nav {
   height: 20px;
+}
+
+#home:hover {
+  text-decoration: none;
+  cursor: pointer;
+  color: #CC0000;
 }
