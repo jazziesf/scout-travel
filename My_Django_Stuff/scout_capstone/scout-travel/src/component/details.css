@@ -8,13 +8,32 @@
   margin-bottom: 1.25em;
 }
 
+.top-right {
+  position: absolute;
+  top: 8px;
+  right: 23px;
+  font-family: 'Kaushan Script', cursive;
+}
+
+.top-left {
+  padding-left: 6px;
+  z-index: 1;
+  height: 30px;
+  background-color: transparent;
+  float: left;
+}
+
+.top-left:hover {
+  cursor: pointer;
+}
+
 .dish-detail {
   color: black;
   font-family: 'Berkshire Swash', cursive;
   text-align: left;
   font-size: 1.5em;
   margin-bottom: 0;
-  padding-right: 5px;
+  padding-right: 15px;
   z-index: auto;
 }
 
@@ -36,9 +55,9 @@
   margin-bottom: .5em;
 }
 
-.pin {
+/* .pin {
   z-index: 1;
-}
+} */
 
 .detail-user {
   float: right;
@@ -62,4 +81,9 @@
   text-align: left;
   padding-left: 6px;
   font-family: 'ZCOOL XiaoWei', serif, arial;
+}
+
+.googlemap {
+  height: 200px;
+  width: 100%;
 }

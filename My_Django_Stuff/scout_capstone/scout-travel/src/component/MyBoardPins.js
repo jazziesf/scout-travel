@@ -14,8 +14,6 @@ class MyPinsList extends Component {
         super(props);
 
         this.state = {
-          likesCount: [],
-          liked: false,
           myPinList: [],
           masterList: [],
         }
@@ -54,52 +52,44 @@ class MyPinsList extends Component {
       }
 
 
-      incrementLikes = (pinId) => {
-        const url = `http://127.0.0.1:8000/api/pin/pin/${pinId}/`
-        const { myPinList } = this.state
+      // removePinFromBoard = (pin) => {
+      //   const userId = parseInt(window.localStorage.getItem('id'));
+      //   const URL = `http://127.0.0.1:8000/api/board/board/${userId}/pins/${pin.id}/remove`
+      //
+      //     const apiPayload = {
+      //       pin: [pin],
+      //       user: userId,
+      //     }
+      //
+      //     axios.delete(URL, apiPayload, { headers: {Authorization: `Token ${document.cookie}`}})
+      //     .then((response) => {
+      //       console.log(response)
+      //       // What should we do when we know the post request worked?
+      //     })
+      //     .catch((error) => {
+      //       // What should we do when we know the post request failed?
+      //       this.setState({
+      //         errorMessage: `Failure ${error.message}`,
+      //       })
+      //     });
+      //   }
 
-        const selectedPin = myPinList.find((pin) => {
-          return pin.id === pinId;
-        });
-
-        if (selectedPin) {
-          selectedPin.likes += 1;
-          this.setState({
-            myPinList: myPinList,
-          });
-        }
-        const apiPayload = {
-          likes: selectedPin.likes
-        }
-
-        axios.patch(url, apiPayload, { headers: { Authorization: `Token ${document.cookie}`}})
-        .then((response) => {
-          console.log(response);
-        })
-        // What should we do when we know the post request worked?
-
-        .catch((error) => {
-          // What should we do when we know the post request failed?
-          this.setState({
-            errorMessage: `Failure ${error.message}`,
-          })
-        });
-      }
 
     render() {
-      const heart = this.state.liked ? "https://image.flaticon.com/icons/svg/69/69904.svg" : "https://image.flaticon.com/icons/svg/126/126471.svg"
+      // const heart = this.state.liked ? "https://image.flaticon.com/icons/svg/69/69904.svg" : "https://image.flaticon.com/icons/svg/126/126471.svg"
 
         const myPinList = this.state.myPinList.map((pin, i) => {
         return <PinPostCard
               key={i}
 
-              likesCountCallback={() => this.incrementLikes(pin.id)}
-              pinToBoardCallback={() => this.pinToBoard(pin)}
+              likesCountCallback={() => this.props.incrementLikes(pin)}
+              pinToBoardCallback={() => this.removePinFromBoard(pin)}
+              pinButton={'Remove'}
 
-              detailsLikeCallback={() => this.incrementLikes(pin.id)}
+              // detailsLikeCallback={() => this.incrementLikes(pin.id)}
               // detailsPageCallback={() => this.detailsPageCallback(pin)}
               detailsPageCallback={() => this.props.detailsPageCallback(pin)}
-              heartFilledSrc={heart}
+              heartFilledSrc={this.props.heartFilledSrc}
 
               // commentCallback: PropTypes.func,
               {...pin}
@@ -122,7 +112,8 @@ MyPinsList.propTypes = {
   detailsPageCallback: PropTypes.func,
   incrementLikes: PropTypes.func,
   detailsLikesCountCallback: PropTypes.func,
-  token: PropTypes.string
+  token: PropTypes.string,
+  heartFilledSrc: PropTypes.string,
   // pinToBoardCallback: PropTypes.func,
 };
 

@@ -50,9 +50,9 @@ class NewPinForm extends Component {
   addPin = (newPin) => {
 
     const form = this.form.current;
-    console.log(form);
+
     const data = new FormData(form)
-    console.log(data);
+    data.toLowerCase()
 
       axios.post(URL, data, { headers: { Authorization: `Token ${document.cookie}`}})
         .then((response) => {
@@ -110,7 +110,7 @@ class NewPinForm extends Component {
           </div>
 
           <div className="form-group new">
-            <label htmlFor="usr">Restauarnt's Name</label>
+            <label htmlFor="usr">Restaurant's Name</label>
             <input type="text" className="form-control" id="usr" name="business" placeholder="Bongo's Cuban Cafe" onChange={this.onFormChange} value={this.state.business} />
           </div>
 

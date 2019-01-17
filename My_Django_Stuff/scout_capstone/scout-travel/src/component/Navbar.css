@@ -38,6 +38,11 @@ body { padding-top: 40px; }
   font-weight: bold;
 }
 
+.search:hover {
+  text-decoration: none;
+  color: white;
+}
+
 #local:hover {
   text-decoration: none;
   color: #CC0000;
@@ -78,9 +83,13 @@ body { padding-top: 40px; }
   color: #CC0000;
 }
 
-.nav-link > a{
+.nav-link > a {
   text-decoration: none;
   cursor: pointer;
+  color: black;
+}
+
+.sign-up {
   color: black;
 }
 

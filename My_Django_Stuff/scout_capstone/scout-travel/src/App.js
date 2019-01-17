@@ -9,6 +9,11 @@ import MyPinsList from './component/MyBoardPins'
 import NewUserLogin from './component/NewUserLogin'
 import ReturningUser from './component/ReturningUser'
 import { Route, Redirect } from 'react-router'
+import PinPostCard from './component/PinPostCard'
+import StackGrid from "react-stack-grid";
+
+// import Splash from './component/Splash'
+// import PinPostCard from './component/ReturningUser'
 
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import axios from 'axios'
@@ -25,11 +30,14 @@ class App extends Component {
       isRevealed: false,
       pinList: [],
       currentPin: undefined,
-      // likesCount: 0,
-      liked: false,
+      heart: 'https://image.flaticon.com/icons/svg/126/126471.svg',
+      updated: false,
       likes: 0,
       loggedIn: false,
       successfulRequest: false,
+      isRevealedScoutBoard: false,
+      query: '',
+      search: true,
     };
   }
 
@@ -54,16 +62,55 @@ class App extends Component {
   //       likesCount: this.state.likesCount - 1
   //     });
   //   }
+  nameCallback = (name) => {
+    this.setState({
+      name: name
+    })
+  }
 
   onSearch = (params) => {
+    params.toLowerCase()
+
     const url = `http://127.0.0.1:8000/api/pin/pin/?city=${params}`
       axios.get(url, { headers: { Authorization: `Token ${document.cookie}`}})
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+      .then((response) => {
+        if (response.data.length === 0) {
+          this.setState({
+            results: false,
+            isActive: false,
+            isOpen: false,
+          })
+        } else {
+        const pins = response.data.map((pin) => {
+
+          const newPin = {
+            ...pin,
+            id: pin.id,
+            image: pin.image,
+            details: pin.details,
+            city: pin.city,
+            state: pin.state,
+            dish: pin.dish,
+            business: pin.business,
+            likes: pin.likes,
+          };
+          return newPin;
+        })
+        // .filter((pin, index) => index < 10);
+        this.setState({
+          pinList: pins,
+          isActive: false,
+          isOpen: false,
+          isRevealed: false,
+        })
+      }
+      })
+      .catch((error) => {
+        console.log(error.message);
+        this.setState({
+          error: error.message,
+        })
+      })
 
   }
 
@@ -92,26 +139,28 @@ class App extends Component {
     });
   };
 
-
   incrementLikes = (pinId) => {
 
     const { pinList } = this.state
-    const selectedPin = pinList.find((pin) => {
-      console.log(pin);
-      return pin.id === pinId;
-    });
 
-    if (selectedPin) {
-      selectedPin.likes += 1;
-      console.log(selectedPin);
+    if(!this.state.updated) {
       this.setState({
-        pinList: pinList,
+          likes: pinId.likes += 1,
+          pinList: pinList,
+          // heart: "https://image.flaticon.com/icons/svg/69/69904.svg"
       });
-    }
+    } else {
+      this.setState({
+          likes: pinId.likes -= 1,
+          pinList: pinList,
+          // heart: "https://image.flaticon.com/icons/svg/126/126471.svg"
+        });
+      }
+
     const apiPayload = {
-      likes: selectedPin.likes
+      likes: pinId.likes
     }
-    const url = URL + `${pinId}/`
+    const url = URL + `${pinId.id}/`
     axios.patch(url, apiPayload, { headers: { Authorization: `Token ${document.cookie}`}} )
     .then((response) => {
       console.log(response);
@@ -130,8 +179,9 @@ class App extends Component {
     this.setState({
       currentPin: pin,
       isRevealed: true,
+      isActive: false,
+      isOpen: false,
     });
-
   }
 
   onLoggedIn = (token) => {
@@ -159,9 +209,17 @@ class App extends Component {
 
   userInfo = () => {
     if (document.cookie !== '') {
-      return <li onClick={this.logOut} className="logout">Log-Out</li>
+      return <span onClick={this.logOut} className="logout">Log-Out</span>
     } else {
       return <Link to="/scoutlogin" >Log-In</Link>
+    }
+  }
+
+  userInfoSignIn = () => {
+    if (document.cookie !== '') {
+      return `Welcome Back`
+    } else {
+      return <Link to="/newuser">Sign Up</Link>
     }
   }
 
@@ -169,18 +227,66 @@ class App extends Component {
     if (document.cookie !== '') {
       return "Scout Ambassador"
     } else {
-      return 'Ambassador Log-In '
+      return 'Scout Log-In & Sign-Up'
     }
   }
 
+  viewBoard = () => {
+    this.setState({
+      isRevealed: false,
+    });
+  }
+
+  onFormChange = (event) => {
+    const field = event.target.name;
+    const value = event.target.value;
+
+    const updatedState = {};
+    updatedState[field] = value;
+    this.setState(updatedState);
+  }
+
+  resetState = () => {
+    this.setState({
+      query: '',
+    });
+  }
+
+  onSubmit = (event) => {
+    event.preventDefault();
+    const { query } = this.state;
+
+    if ( query === '') return;
+
+    this.onSearch(query);
+    this.resetState();
+    this.setState({
+      isRevealed: false,
+    })
+  }
 
 
   render() {
-    const heart = this.state.liked ? "https://image.flaticon.com/icons/svg/69/69904.svg" : "https://image.flaticon.com/icons/svg/126/126471.svg"
     const show = this.state.isOpen ? "collapse navbar-collapse show" : "collapse navbar-collapse"
     const dropdown1 = this.state.isActive ? "nav-item dropdown show" : "nav-item dropdown"
     const dropdown2 = this.state.isActive ? "dropdown-menu show" : "dropdown-menu"
     const dropdown3 = this.state.isActive ? "true" : "false"
+
+    const pinList = this.state.pinList.map((pin) => {
+      return <PinPostCard
+      key={pin.id}
+      pinButton={"Pin"}
+      likesCountCallback={() => this.incrementLikes(pin)}
+
+      pinToBoardCallback={() => this.pinToBoard(pin)}
+
+      detailsPageCallback={() => this.detailsPageCallback(pin)}
+      heartFilledSrc={this.state.heart}
+
+      // commentCallback: PropTypes.func,
+      {...pin}
+      />
+    })
 
     return (
       <div className="App">
@@ -195,12 +301,30 @@ class App extends Component {
             expandDropdown={dropdown3}
             closeNav={(event) => this.closeNavBar(event)}
             login={this.userInfo()}
-            signUp={<Link to="/newuser">Sign Up</Link>}
-            myScoutList={<Link to="/myscoutboard" >My Scout Board</Link>}
+            signUp={this.userInfoSignIn()}
+            myScoutList={<Link to="/myscoutboard" onClick={() => this.viewBoard()}>My Scout Board</Link>}
             linkAddPin={<Link to="/addscoutpin" >Post to Scout</Link>}
             scoutAmbassador={this.scoutAmbassadorInfo()}
-            searchQuery={this.onSearch}
+            searchQuery={this.onSubmit}
+            searchQueryonChange={this.onFormChange}
+            searchQueryValue={this.state.query}
+            searchLink={<Link to="/searchresults" className="btn-outline-danger my-2 my-sm-0 searchBtn" onClick={() => this.viewBoard()}>Search</Link>}
           />
+
+
+          <Route path="/searchresults" render={() => (
+              this.state.isRevealed ? (
+                <Redirect to="/scoutdetails"/>
+              ) : (
+              this.state.results ? (
+                <StackGrid columnWidth={400} >
+                   {pinList}
+                 </StackGrid>
+               ) : (
+                 <p>Looks like you have no search results</p>
+               )
+             )
+           )}/>
 
         <Route path="/scoutdetails"
           render={() =>
@@ -208,7 +332,10 @@ class App extends Component {
               pinSelected={this.state.currentPin}
               likesCountCallback={(pinId) => this.incrementLikes(pinId)}
               commentCallback={()=> this.commentView}
-              heartFilledSrc={heart}
+              incrementLikes={(pinId) => this.incrementLikes(pinId)}
+              heartFilledSrc={this.state.heart}
+              pinButton={"Pin"}
+              backButton={() => this.backButton()}
             />
            }
          />
@@ -222,7 +349,7 @@ class App extends Component {
            /> }
          />  */}
 
-         <Route exact path="/scout" render={() => (
+         <Route path="/scout" render={() => (
              this.state.isRevealed ? (
                <Redirect to="/scoutdetails"/>
              ) : (
@@ -230,12 +357,15 @@ class App extends Component {
                  // likesCountCallback={this.likesCountCallback}
                  selectPinCallback={(pinId) => this.onSelectPin(pinId)} //check APPMOCKFINAL this one should work with pin.id
                  detailsPageCallback={this.detailsPageCallback} //this may not work beacuse you need an id
+                 incrementLikes={(pinId) => this.incrementLikes(pinId)}
+                 heartFilledSrc={this.state.heart}
+
               />
             )
           )}/>
 
 
-          <Route exact path="/myscoutboard" render={() =>
+          <Route path="/myscoutboard" render={() =>
               this.state.isRevealed ? (
                 <Redirect to="/scoutdetails"/>
               ) : (
@@ -243,11 +373,13 @@ class App extends Component {
               // likesCountCallback={this.likesCountCallback}
               selectPinCallback={(pinId) => this.onSelectPin(pinId)} //check APPMOCKFINAL this one should work with pin.id
               detailsPageCallback={this.detailsPageCallback} //this may not work beacuse you need an id
+              incrementLikes={(pinId) => this.incrementLikes(pinId)}
+              heartFilledSrc={this.state.heart}
               />
             )}
           />
 
-        <Route exact path="/newuser" render={() => (
+        <Route path="/newuser" render={() => (
             this.state.loggedIn ? (
               <Redirect to="/scout"/>
             ) : (
@@ -257,19 +389,19 @@ class App extends Component {
         />
 
 
-        <Route exact path="/scoutlogin" render={() => (
+        <Route path="/scoutlogin" render={() => (
             this.state.loggedIn ? (
               <Redirect to="/scout"/>
             ) : (
             <ReturningUser
             loggedInCallback={this.onLoggedIn}
-            nameCallback={this.scoutAmbassadorInfo}
+            nameCallback={(name) => this.nameCallback(name)}
             />
            )
          )}/>
 
 
-       <Route exact path="/addscoutpin" render={() => (
+       <Route path="/addscoutpin" render={() => (
            this.state.successfulRequest ? (
              <Redirect to="/scout"/>
            ) : (

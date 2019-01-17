@@ -17,9 +17,6 @@ return (
             <li className="nav-item active">
               <a className="nav-link" id="home" href="scout">Home</a>
             </li>
-            <li className="nav-item">
-              <p className="nav-link" href="log-In" onClick={props.closeNav}>{props.signUp}</p>
-            </li>
             <li className={props.dropdownClassName} >
               <p className="nav-link dropdown-toggle" href="scout" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded={props.expandDropdown} onClick={props.dropdown}>
                 {props.scoutAmbassador}
@@ -28,14 +25,15 @@ return (
                 <p className="dropdown-item" onClick={props.closeNav}>{props.login}</p>
                 <p className="dropdown-item" onClick={props.closeNav}>{props.myScoutList}</p>
                 <p className="dropdown-item" onClick={props.closeNav}>{props.linkAddPin}</p>
+                <p className="dropdown-item" onClick={props.closeNav}>{props.signUp}</p>
                 <div className="dropdown-divider"></div>
                 <a className="dropdown-item" id="local" href="https://www.thestranger.com/events/food" target="_blank" rel='noreferrer noopener' onClick={props.closeNav}>Local Food & Drink Events</a>
               </div>
             </li>
           </ul>
-          <form className="form-inline my-2 my-lg-0">
-            <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-            <button className="btn btn-outline-danger my-2 my-sm-0 search" onClick={props.searchQuery} type="submit">Search</button>
+          <form className="form-inline my-2 my-lg-0 searchInput">
+            <input className="form-control mr-sm-2" name="query" type="search" placeholder="Search" aria-label="Search" value={props.searchQueryValue} onChange={props.searchQueryonChange}/>
+            <button className="btn btn-outline-danger text-white my-2 my-sm-0 search" onClick={props.searchQuery} type="submit">{props.searchLink}</button>
           </form>
         </div>
       </nav>
@@ -51,6 +49,9 @@ Navbar.propTypes = {
   dropdownShow: PropTypes.string,
   expandDropdown: PropTypes.string,
   closeNav: PropTypes.func,
+  searchQuery: PropTypes.func,
+  searchQueryonChange: PropTypes.func,
+  searchQueryValue: PropTypes.string
   // linkAddPin: PropTypes.link,
   // searchBar: PropTypes.object,
   // customers: PropTypes.object,

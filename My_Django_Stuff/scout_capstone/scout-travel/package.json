@@ -5,6 +5,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.2.1",
+    "google-map-react": "^1.1.2",
+    "google-maps-react": "^2.0.2",
     "react": "^16.6.0",
     "react-bootstrap": "^0.32.4",
     "react-bootstrap-dropdown-menu": "^1.1.15",

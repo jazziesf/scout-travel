@@ -42,7 +42,7 @@ class ReturningUser extends Component {
       this.setState({
         name: response.data.name
       })
-      this.nameCallback(response.data.name)
+      this.props.nameCallback(response.data.name)
 
       this.resetState()
     })

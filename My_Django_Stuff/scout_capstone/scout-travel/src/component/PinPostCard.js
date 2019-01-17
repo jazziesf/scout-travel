@@ -12,7 +12,7 @@ const PostCard = (props) => {
         <div className="container">
           <img src={props.image} alt={props.business} />
           <sub className="bottom-left">{props.city}, {props.state}</sub>
-          <button className="top-right btn btn-danger" onClick={props.pinToBoardCallback}>Pin</button>
+          <button className="top-right btn btn-danger" onClick={props.pinToBoardCallback}>{props.pinButton}</button>
         </div>
 
         <div className="icons">
@@ -36,6 +36,7 @@ const PostCard = (props) => {
     // name: PropTypes.string,
     // city: PropTypes.string,
     // state: PropTypes.string,
+    pinButton: PropTypes.string,
     heartFilledSrc: PropTypes.string,
     likes: PropTypes.number,
     commentCallback: PropTypes.func,
