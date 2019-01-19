@@ -1,14 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Dancing+Script|Gloria+Hallelujah|Kaushan+Script|Berkshire+Swash|ZCOOL+XiaoWei');
 
+
+.fixed-top {
+  padding-bottom: 2.5px !important;
+  padding-top: 2.5px !important;
+}
+
 .navbar-brand  {
   font-size: 2em !important;
   font-family: 'Berkshire Swash', cursive;
 }
-.facebook {
-  height: 40px;
-  color: black;
 
+.brand {
+  margin-bottom: 0px;
 }
+
 .nav-body {
   padding-top: 50px;
 }
@@ -55,6 +61,11 @@ body { padding-top: 40px; }
   font-weight: 550;
 }
 
+.navbar-default {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
 .dropdown-item > a {
   text-decoration: none;
   color: black;
@@ -69,7 +80,6 @@ body { padding-top: 40px; }
 
 .nav-link {
   margin: 0;
-  padding-top: 16px;
   text-decoration: none;
   color: black;
   font-size: 1.15em;
@@ -83,10 +93,17 @@ body { padding-top: 40px; }
   color: #CC0000;
 }
 
-.nav-link > a {
+.nav-link  {
   text-decoration: none;
   cursor: pointer;
   color: black;
+}
+
+.nav-link > p {
+  text-decoration: none;
+  cursor: pointer;
+  color: black;
+  padding-bottom: 2px;
 }
 
 .sign-up {
@@ -105,7 +122,7 @@ body { padding-top: 40px; }
   color: #CC0000;
 }
 
-.nav-link:hover > a {
+.nav-link:hover {
   text-decoration: none;
   cursor: pointer;
   color: #CC0000;
@@ -119,4 +136,13 @@ body { padding-top: 40px; }
   text-decoration: none;
   cursor: pointer;
   color: #CC0000;
+}
+
+.btn-outline-danger:hover {
+  color: white;
+}
+
+#navbarSupportedContent {
+  padding-top: 5px;
+  padding-right: 15px;
 }

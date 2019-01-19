@@ -40,7 +40,7 @@ img {
   bottom: 10px;
   left: 26px;
   font-family: 'Kaushan Script', cursive;
-  font-size: 1em;
+  font-size: 1.15em;
 }
 
 /* Top right text */
@@ -66,24 +66,24 @@ img {
 }
 
 .comment {
-  height: 27px;
-  width: 23px;
+  height: 29px;
+  width: 25px;
   float: left;
   padding: 2px;
   margin-left: 10px
 }
 
 .heart {
-  height: 27px;
-  width: 29px;
+  height: 29px;
+  width: 31px;
   float: left;
   padding: 4px;
   margin-left: 4px;
 }
 
 .details {
-  height: 27px;
-  width: 30px;
+  height: 31px;
+  width: 34px;
   float: right;
   margin-right: 20px;
 }
@@ -104,7 +104,7 @@ img {
 }
 
 .likes {
-  margin-top: 7px;
+  margin-top: 8px;
   padding-left: 20px;
   font-size: .95em;
   text-align: left;

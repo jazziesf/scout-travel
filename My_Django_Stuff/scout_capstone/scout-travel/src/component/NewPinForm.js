@@ -43,16 +43,16 @@ class NewPinForm extends Component {
 
     const updatedState = {};
     updatedState[field] = value;
+    updatedState[0].toUpperCase()
     this.setState(updatedState);
   }
 
 
   addPin = (newPin) => {
-
+    console.log(newPin);
     const form = this.form.current;
 
     const data = new FormData(form)
-    data.toLowerCase()
 
       axios.post(URL, data, { headers: { Authorization: `Token ${document.cookie}`}})
         .then((response) => {

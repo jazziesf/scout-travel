@@ -47,6 +47,7 @@ class NewUserLogin extends Component {
           token: response.data.token
         })
         document.cookie = `${response.data.token}`;
+
         this.props.loggedInCallback(response.data.token)
       })
       .catch((error) => {
@@ -71,6 +72,7 @@ class NewUserLogin extends Component {
       axios.post(URL, apiPayload)
         .then((response) => {
           this.getToken(newUser)
+          window.localStorage.setItem('id', response.data.id)
           // What should we do when we know the post request worked?
         })
         .catch((error) => {

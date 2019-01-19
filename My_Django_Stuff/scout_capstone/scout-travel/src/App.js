@@ -11,8 +11,9 @@ import ReturningUser from './component/ReturningUser'
 import { Route, Redirect } from 'react-router'
 import PinPostCard from './component/PinPostCard'
 import StackGrid from "react-stack-grid";
+import NavbarGuest from './component/NavbarGuest'
 
-// import Splash from './component/Splash'
+import Splash from './component/Splash'
 // import PinPostCard from './component/ReturningUser'
 
 import { BrowserRouter as Router, Link } from "react-router-dom";
@@ -38,6 +39,7 @@ class App extends Component {
       isRevealedScoutBoard: false,
       query: '',
       search: true,
+      results: false
     };
   }
 
@@ -76,9 +78,9 @@ class App extends Component {
       .then((response) => {
         if (response.data.length === 0) {
           this.setState({
-            results: false,
             isActive: false,
             isOpen: false,
+            results: false,
           })
         } else {
         const pins = response.data.map((pin) => {
@@ -102,6 +104,7 @@ class App extends Component {
           isActive: false,
           isOpen: false,
           isRevealed: false,
+          results: true,
         })
       }
       })
@@ -185,11 +188,12 @@ class App extends Component {
   }
 
   onLoggedIn = (token) => {
-    // document.cookie = `${token}`;
+    if (document.cookie !== '') {
     // userId = window.localStorage.setItem('id', response.data.id)
-    this.setState({
-      loggedIn: true,
-    })
+      this.setState({
+        loggedIn: true,
+      })
+    }
   }
 
   logOut = () => {
@@ -197,6 +201,7 @@ class App extends Component {
     document.cookie = ''
     this.setState({
       loggedIn: false,
+      isRevealed: false,
     })
   }
 
@@ -207,33 +212,12 @@ class App extends Component {
     console.log(this.state.successfulRequest)
   }
 
-  userInfo = () => {
-    if (document.cookie !== '') {
-      return <span onClick={this.logOut} className="logout">Log-Out</span>
-    } else {
-      return <Link to="/scoutlogin" >Log-In</Link>
-    }
-  }
-
-  userInfoSignIn = () => {
-    if (document.cookie !== '') {
-      return `Welcome Back`
-    } else {
-      return <Link to="/newuser">Sign Up</Link>
-    }
-  }
-
-  scoutAmbassadorInfo = (name) => {
-    if (document.cookie !== '') {
-      return "Scout Ambassador"
-    } else {
-      return 'Scout Log-In & Sign-Up'
-    }
-  }
 
   viewBoard = () => {
     this.setState({
       isRevealed: false,
+      isActive: false,
+      isOpen: false,
     });
   }
 
@@ -253,16 +237,19 @@ class App extends Component {
   }
 
   onSubmit = (event) => {
+    if(event.charCode === 13 ){
+    console.log('enter press here! ')
+    }
     event.preventDefault();
     const { query } = this.state;
 
     if ( query === '') return;
 
     this.onSearch(query);
-    this.resetState();
     this.setState({
       isRevealed: false,
     })
+    this.resetState();
   }
 
 
@@ -271,6 +258,7 @@ class App extends Component {
     const dropdown1 = this.state.isActive ? "nav-item dropdown show" : "nav-item dropdown"
     const dropdown2 = this.state.isActive ? "dropdown-menu show" : "dropdown-menu"
     const dropdown3 = this.state.isActive ? "true" : "false"
+
 
     const pinList = this.state.pinList.map((pin) => {
       return <PinPostCard
@@ -292,41 +280,52 @@ class App extends Component {
       <div className="App">
       <Router>
         <div>
+        { document.cookie !== '' ? (
           <Navbar
-            hamburgerMenu={() => this.toggleHamburgerMenu()}
-            collapseNavbar={show}
-            dropdown={(event) => this.toggleDropdown(event)}
-            dropdownClassName={dropdown1}
-            dropdownShow={dropdown2}
-            expandDropdown={dropdown3}
-            closeNav={(event) => this.closeNavBar(event)}
-            login={this.userInfo()}
-            signUp={this.userInfoSignIn()}
-            myScoutList={<Link to="/myscoutboard" onClick={() => this.viewBoard()}>My Scout Board</Link>}
-            linkAddPin={<Link to="/addscoutpin" >Post to Scout</Link>}
-            scoutAmbassador={this.scoutAmbassadorInfo()}
-            searchQuery={this.onSubmit}
-            searchQueryonChange={this.onFormChange}
-            searchQueryValue={this.state.query}
-            searchLink={<Link to="/searchresults" className="btn-outline-danger my-2 my-sm-0 searchBtn" onClick={() => this.viewBoard()}>Search</Link>}
+          hamburgerMenu={() => this.toggleHamburgerMenu()}
+          collapseNavbar={show}
+          dropdown={(event) => this.toggleDropdown(event)}
+          dropdownClassName={dropdown1}
+          dropdownShow={dropdown2}
+          expandDropdown={dropdown3}
+          closeNav={(event) => this.closeNavBar(event)}
+          viewBoard={() => this.viewBoard()}
+          logout={<Link to="/splash" onClick={this.logOut}>Log-Out</Link>}
+          myScoutList={<Link to="/mynosherboard" onClick={() => this.viewBoard()}>My Nosher Board</Link>}
+          linkAddPin={<Link to="/addnosherpin">Post to Nosher</Link>}
+          searchQuery={this.onSubmit}
+          searchQueryonChange={this.onFormChange}
+          searchQueryValue={this.state.query}
+          searchLink={<Link to="/searchresults" className="btn-outline-danger my-2 my-sm-0 searchBtn" onClick={() => this.viewBoard()}>Search</Link>}
           />
+          ) : (
+          <NavbarGuest
+          dropdown={(event) => this.toggleDropdown(event)}
+          hamburgerMenu={() => this.toggleHamburgerMenu()}
+          collapseNavbar={show}
+          signUp={<Link to="/noshernewuser">Nosh Ambassador Sign-Up</Link>}
+          login={<Link to="/nosherlogin" >Log-In</Link>}
+          />
+        )}
 
 
           <Route path="/searchresults" render={() => (
               this.state.isRevealed ? (
-                <Redirect to="/scoutdetails"/>
+                <Redirect to="/nosherdetails"/>
               ) : (
               this.state.results ? (
                 <StackGrid columnWidth={400} >
                    {pinList}
                  </StackGrid>
                ) : (
-                 <p>Looks like you have no search results</p>
+                <div className='center'>
+                 <p className='search-results'>Look's Like there are places to be discovered. Be the first to Scout this Area!</p>
+                </div>
                )
              )
            )}/>
 
-        <Route path="/scoutdetails"
+        <Route path="/nosherdetails"
           render={() =>
             <Details
               pinSelected={this.state.currentPin}
@@ -349,10 +348,11 @@ class App extends Component {
            /> }
          />  */}
 
-         <Route path="/scout" render={() => (
+         <Route path="/nosher" render={() => (
              this.state.isRevealed ? (
-               <Redirect to="/scoutdetails"/>
+               <Redirect to="/nosherdetails"/>
              ) : (
+               <div>
                <AllPinsList
                  // likesCountCallback={this.likesCountCallback}
                  selectPinCallback={(pinId) => this.onSelectPin(pinId)} //check APPMOCKFINAL this one should work with pin.id
@@ -361,13 +361,19 @@ class App extends Component {
                  heartFilledSrc={this.state.heart}
 
               />
+              </div>
+
             )
           )}/>
 
+         <Route path="/splash"
+            render={() => (  <Splash /> ) } />
 
-          <Route path="/myscoutboard" render={() =>
+
+
+          <Route path="/mynosherboard" render={() =>
               this.state.isRevealed ? (
-                <Redirect to="/scoutdetails"/>
+                <Redirect to="/nosherdetails"/>
               ) : (
               <MyPinsList
               // likesCountCallback={this.likesCountCallback}
@@ -379,31 +385,35 @@ class App extends Component {
             )}
           />
 
-        <Route path="/newuser" render={() => (
-            this.state.loggedIn ? (
-              <Redirect to="/scout"/>
-            ) : (
-           <NewUserLogin loggedInCallback={this.onLoggedIn} />
-           )
-         )}
-        />
+          <Route path="/noshernewuser" render={() => (
+              this.state.loggedIn ? (
+                <Redirect to="/nosher"/>
+              ) : (
+              <Splash >
+              <NewUserLogin loggedInCallback={this.onLoggedIn} />
+              </Splash >
+             )
+           )}
+          />
 
 
-        <Route path="/scoutlogin" render={() => (
+        <Route path="/nosherlogin" render={() => (
             this.state.loggedIn ? (
-              <Redirect to="/scout"/>
+              <Redirect to="/nosher"/>
             ) : (
-            <ReturningUser
-            loggedInCallback={this.onLoggedIn}
-            nameCallback={(name) => this.nameCallback(name)}
-            />
+            <Splash >
+              <ReturningUser
+              loggedInCallback={this.onLoggedIn}
+              nameCallback={(name) => this.nameCallback(name)}
+              />
+            </Splash >
            )
          )}/>
 
 
-       <Route path="/addscoutpin" render={() => (
+       <Route path="/addnosherpin" render={() => (
            this.state.successfulRequest ? (
-             <Redirect to="/scout"/>
+             <Redirect to="/nosher"/>
            ) : (
              <NewPinForm successfullRequestCallback={this.onSuccessfulRequest}/>
           )

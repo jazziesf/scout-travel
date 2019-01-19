@@ -46,7 +46,7 @@ render() {
         <div className="row">
           <div className="col-12 col-sm-6 img-fluid img-responsive">
             <img src={this.props.pinSelected.image} alt="Snow" className="image-fix"/>
-            <button className="top-right btn btn-danger pin-btn" onClick={() => this.pinToBoard(this.props.pinSelected)}>Pin</button>
+            <button className="top-right btn btn-danger pin-btn detail-btn" onClick={() => this.pinToBoard(this.props.pinSelected)}>Pin</button>
           </div>
           <div className="col-12 col-sm-6">
             <div className="container">
@@ -63,9 +63,7 @@ render() {
                 <p className="likes-details">{this.props.pinSelected.likes} likes</p>
               <div className="scroll">
                 <p className="description">{this.props.pinSelected.details}</p>
-                <div className="googlemap">
-                  {/*  <GoogleMaps /> */}
-                </div>
+
               </div>
             </div>
           </div>

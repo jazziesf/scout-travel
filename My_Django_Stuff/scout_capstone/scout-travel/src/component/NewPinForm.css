@@ -7,6 +7,7 @@
   margin-left:14%;
   margin-bottom: 50px;
   z-index: 1;
+  margin-top: 15px;
 }
 
 @media screen and (max-width: 500px) {
@@ -19,6 +20,18 @@
   padding-left: 18%;
   padding-right: 18%;
   font-family: 'ZCOOL XiaoWei', serif;
+}
+
+@media screen and (max-width: 700px) {
+  .form-div {
+    margin-left: 20% !important;
+    margin-right: 20% !important; }
+}
+
+@media screen and (max-width: 600px) {
+  .form-div {
+    margin-left: 4% !important;
+    margin-right: 4% !important; }
 }
 
 @media screen and (max-width: 500px) {

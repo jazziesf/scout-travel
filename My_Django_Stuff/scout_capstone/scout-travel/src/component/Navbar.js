@@ -1,13 +1,15 @@
 import React from 'react';
 import './Navbar.css'
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
+
 
 const Navbar = (props) => {
 
 return (
   <div className="nav-body">
     <nav className="navbar navbar-default fixed-top navbar-expand-md navbar-light bg-light">
-        <a className="navbar-brand" href="scout">Sc<img src="https://image.flaticon.com/icons/svg/214/214298.svg" alt="donut icon" className="donut-nav"/>ut</a>
+        <Link className="navbar-brand" to="/nosher" onClick={props.viewBoard}>N<img src="https://image.flaticon.com/icons/svg/214/214298.svg" alt="donut icon" className="donut-nav"/>sher</Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onClick={props.hamburgerMenu} >
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -15,17 +17,16 @@ return (
         <div className={props.collapseNavbar} id="navbarSupportedContent" >
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <a className="nav-link" id="home" href="scout">Home</a>
+            <Link className="nav-link" to="/nosher" onClick={props.viewBoard}>All Pins</Link>
             </li>
             <li className={props.dropdownClassName} >
-              <p className="nav-link dropdown-toggle" href="scout" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded={props.expandDropdown} onClick={props.dropdown}>
-                {props.scoutAmbassador}
+              <p className="nav-link dropdown-toggle" href="/nosher" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded={props.expandDropdown} onClick={props.dropdown}>
+                Nosh Ambassador Profile
               </p>
               <div className={props.dropdownShow} aria-labelledby="navbarDropdown">
-                <p className="dropdown-item" onClick={props.closeNav}>{props.login}</p>
+                <p className="dropdown-item" onClick={props.closeNav}>{props.logout}</p>
                 <p className="dropdown-item" onClick={props.closeNav}>{props.myScoutList}</p>
                 <p className="dropdown-item" onClick={props.closeNav}>{props.linkAddPin}</p>
-                <p className="dropdown-item" onClick={props.closeNav}>{props.signUp}</p>
                 <div className="dropdown-divider"></div>
                 <a className="dropdown-item" id="local" href="https://www.thestranger.com/events/food" target="_blank" rel='noreferrer noopener' onClick={props.closeNav}>Local Food & Drink Events</a>
               </div>
@@ -52,11 +53,6 @@ Navbar.propTypes = {
   searchQuery: PropTypes.func,
   searchQueryonChange: PropTypes.func,
   searchQueryValue: PropTypes.string
-  // linkAddPin: PropTypes.link,
-  // searchBar: PropTypes.object,
-  // customers: PropTypes.object,
-  // errors: PropTypes.string,
-  // search: PropTypes.object,
 }
 
 export default Navbar;

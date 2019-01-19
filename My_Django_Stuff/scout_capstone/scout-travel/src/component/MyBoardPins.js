@@ -6,8 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import StackGrid from "react-stack-grid";
 
 
-const userId = window.localStorage.getItem('id')
-const URL = `http://127.0.0.1:8000/api/board/board/${userId}/`
 
 class MyPinsList extends Component {
       constructor(props) {
@@ -20,6 +18,9 @@ class MyPinsList extends Component {
       }
 
     componentDidMount() {
+      const userId = window.localStorage.getItem('id')
+      const URL = `http://127.0.0.1:8000/api/board/board/${userId}/`
+
         axios.get(URL, { headers: { Authorization: `Token ${document.cookie}`}})
           .then((response) => {
             const pins = response.data.pin.map((pi) => {
@@ -40,7 +41,6 @@ class MyPinsList extends Component {
 
             this.setState({
               myPinList: pins,
-              masterList: pins,
             })
           })
           .catch((error) => {
@@ -52,27 +52,36 @@ class MyPinsList extends Component {
       }
 
 
-      // removePinFromBoard = (pin) => {
-      //   const userId = parseInt(window.localStorage.getItem('id'));
-      //   const URL = `http://127.0.0.1:8000/api/board/board/${userId}/pins/${pin.id}/remove`
-      //
-      //     const apiPayload = {
-      //       pin: [pin],
-      //       user: userId,
-      //     }
-      //
-      //     axios.delete(URL, apiPayload, { headers: {Authorization: `Token ${document.cookie}`}})
-      //     .then((response) => {
-      //       console.log(response)
-      //       // What should we do when we know the post request worked?
-      //     })
-      //     .catch((error) => {
-      //       // What should we do when we know the post request failed?
-      //       this.setState({
-      //         errorMessage: `Failure ${error.message}`,
-      //       })
-      //     });
-      //   }
+      removePinFromBoard = (pin) => {
+        const userId = parseInt(window.localStorage.getItem('id'));
+        const URL = `http://127.0.0.1:8000/api/board/board/${userId}/pins/${pin.id}/remove/`
+
+          const apiPayload = {
+            pin: [pin],
+            user: userId,
+          }
+
+          axios.delete(URL, { data: apiPayload }, {headers: {Authorization: `Token ${document.cookie}`}})
+          .then((response) => {
+            console.log(response)
+            const selectedPin = this.state.myPinList.findIndex((item) => {
+                 return item.id === pin.id;
+             });
+
+            this.state.myPinList.splice(selectedPin, 1)
+            
+            this.setState({
+              myPinList: this.state.myPinList,
+            })
+            // What should we do when we know the post request worked?
+          })
+          .catch((error) => {
+            // What should we do when we know the post request failed?
+            this.setState({
+              errorMessage: `Failure ${error.message}`,
+            })
+          });
+        }
 
 
     render() {
