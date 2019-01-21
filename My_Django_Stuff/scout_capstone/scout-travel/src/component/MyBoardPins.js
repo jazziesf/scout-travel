@@ -94,7 +94,7 @@ class MyPinsList extends Component {
               pinToBoardCallback={() => this.removePinFromBoard(pin)}
               pinButton={'Remove'}
               detailsPageCallback={() => this.props.detailsPageCallback(pin)}
-
+              buttonType={"top-right btn btn-warning"}
               {...pin}
              />
         });

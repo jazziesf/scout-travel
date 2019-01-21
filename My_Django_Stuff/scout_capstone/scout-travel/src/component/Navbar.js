@@ -28,11 +28,11 @@ return (
             </li>
             <li className={props.dropdownClassName} >
               <p className="nav-link dropdown-toggle" href="/nosher" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded={props.expandDropdown} onClick={props.dropdown}>
-               {userName} Ambassador Profile
+                {userName} Nosher Profile
               </p>
               <div className={props.dropdownShow} aria-labelledby="navbarDropdown">
                 <p className="dropdown-item" onClick={props.closeNav}>{props.logout}</p>
-                <p className="dropdown-item" onClick={props.closeNav}>{props.myScoutList}</p>
+                <p className="dropdown-item" onClick={props.closeNav}>{userName} {props.myScoutList}</p>
                 <p className="dropdown-item" onClick={props.closeNav}>{props.linkAddPin}</p>
                 <div className="dropdown-divider"></div>
                 <a className="dropdown-item" id="local" href="https://www.thestranger.com/events/food" target="_blank" rel='noreferrer noopener' onClick={props.closeNav}>Local Food & Drink Events</a>

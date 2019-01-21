@@ -12,7 +12,6 @@ class MyBoardDetails extends Component {
 
     this.state = {
       pin: null,
-      // isRevealed: false,
     }
   }
 
@@ -52,7 +51,7 @@ render() {
         <div className="row">
           <div className="col-12 col-sm-6 img-fluid img-responsive">
             <img src={pin.image} alt={pin.dish} className="image-fix"/>
-            <Link to="/mynosherboard" className="top-right btn btn-danger" onClick={() => this.props.goBack()}>Back</Link>
+            <Link to="/mynosherboard" className="top-right btn btn-warning" onClick={() => this.props.goBack()}>Back</Link>
           </div>
           <div className="col-12 col-sm-6">
             <div className="container">
@@ -64,6 +63,7 @@ render() {
               <div className="icons-details" >
                 <img src='https://image.flaticon.com/icons/svg/126/126471.svg' alt="like button" className="heart" onClick={() => this.props.incrementLikes(pin)}/>
                 <img src="https://image.flaticon.com/icons/svg/54/54761.svg" alt="comment box" className="comment" onClick={this.props.commentCallback} />
+                <a href={`https://www.google.com/maps/search/?api=1&query=${pin.business}+${pin.city}+${pin.state}`} target='_blank' rel='noreferrer noopener'><img src="https://image.flaticon.com/icons/svg/684/684809.svg" alt="comment" className="map"/></a>
               </div>
                 <p className="likes-details">{pin.likes} likes</p>
               <div className="scroll">

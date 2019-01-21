@@ -14,6 +14,11 @@ class Details extends Component {
           pin: null,
         }
       }
+      //
+      // goBack(){
+      //   this.history.push('/nosher')
+      // }
+
 
       componentDidMount() {
         if (this.props.selectedPin === undefined) {
@@ -25,6 +30,7 @@ class Details extends Component {
           })
         }
       }
+
 
 
       pinToBoard = (pin) => {
@@ -72,6 +78,8 @@ render() {
               <div className="icons-details" >
                 <img src='https://image.flaticon.com/icons/svg/126/126471.svg' alt="like button" className="heart" onClick={() => this.props.incrementLikes(pin)}/>
                 <img src="https://image.flaticon.com/icons/svg/54/54761.svg" alt="comment box" className="comment" onClick={this.props.commentCallback} />
+                <a href={`https://www.google.com/maps/search/?api=1&query=${pin.business}+${pin.city}+${pin.state}`} target='_blank' rel='noreferrer noopener'><img src="https://image.flaticon.com/icons/svg/684/684809.svg" alt="comment" className="map"/></a>
+
               </div>
                 <p className="likes-details">{pin.likes} likes</p>
               <div className="scroll">

@@ -51,6 +51,7 @@ class AllPinsList extends Component {
     })
   }
 
+
   pinToBoard = (pin) => {
     const userId = parseInt(window.localStorage.getItem('id'));
     const URL = `http://127.0.0.1:8000/api/board/board/${userId}/pins/${pin.id}/add/`
@@ -91,8 +92,8 @@ class AllPinsList extends Component {
       key={pin.id}
       pinButton={"Pin"}
       likesCountCallback={() => this.props.incrementLikes(pin)}
-
       pinToBoardCallback={() => this.pinToBoard(pin)}
+      buttonType={"top-right btn btn-danger"}
 
       detailsPageCallback={() => this.props.detailsPageCallback(pin)}
       heartFilledSrc={this.props.heartFilledSrc}

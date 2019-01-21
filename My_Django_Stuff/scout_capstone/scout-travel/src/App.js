@@ -37,7 +37,7 @@ class App extends Component {
       successfulRequest: false,
       isRevealedScoutBoard: false,
       query: '',
-      search: true,
+      allPinsSearch: true,
       results: false
     };
   }
@@ -56,9 +56,9 @@ class App extends Component {
   // }
 
   onSearch = (params) => {
-    params.toLowerCase()
 
     const url = `http://127.0.0.1:8000/api/pin/pin/?city=${params}`
+
       axios.get(url, { headers: { Authorization: `Token ${document.cookie}`}})
       .then((response) => {
         if (response.data.length === 0) {
@@ -185,7 +185,7 @@ class App extends Component {
   // controll log-in views with the presence of document cookies
   onLoggedIn = (token) => {
     if (document.cookie !== '') {
-    // userId = window.localStorage.setItem('id', response.data.id)
+      // let userName = window.localStorage.getItem('name')
       this.setState({
         loggedIn: true,
         isActive: false,
@@ -269,6 +269,7 @@ class App extends Component {
       likesCountCallback={() => this.incrementLikes(pin)}
       pinToBoardCallback={() => this.pinToBoard(pin)}
       detailsPageCallback={() => this.detailsPageCallback(pin)}
+      buttonType={"top-right btn btn-danger"}
       {...pin}
       />
     })
@@ -287,8 +288,8 @@ class App extends Component {
           expandDropdown={dropdown3}
           closeNav={(event) => this.closeNavBar(event)}
           viewBoard={() => this.viewBoard()}
-          logout={<Link to="/splash" onClick={this.logOut}>Log-Out</Link>}
-          myScoutList={<Link to="/mynosherboard" onClick={() => this.viewBoard()}>My Nosher Board</Link>}
+          logout={<Link to="/home" onClick={this.logOut}>Log-Out</Link>}
+          myScoutList={<Link to="/mynosherboard" onClick={() => this.viewBoard()}>Nosher Board</Link>}
           linkAddPin={<Link to="/addnosherpin">Post to Nosher</Link>}
           searchQuery={this.onSubmit}
           searchQueryonChange={this.onFormChange}
@@ -316,7 +317,7 @@ class App extends Component {
                    {pinList}
                  </StackGrid>
                ) : (
-                 <NoResults >
+                <NoResults >
                 </NoResults >
                )
              )
@@ -355,7 +356,8 @@ class App extends Component {
            }
          />
 
-         <Route path="/splash"
+
+         <Route path="/home"
             render={() => (  <Splash /> ) } />
 
           <Route path="/mynosherboard" render={() =>

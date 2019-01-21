@@ -94,7 +94,7 @@ class ReturningUser extends Component {
     return (
       <div className="form-div new-user">
       <h3 className='login'>N<img src="https://image.flaticon.com/icons/svg/214/214298.svg" alt="donut icon" className="donut"/>sher Ambassad<img src="https://image.flaticon.com/icons/svg/761/761952.svg" alt="donut icon" className="donut"/>r</h3>
-        <p className="login-p">Hurry up and Log-In, new food discoveries await</p>
+        <p className="login-p">Your new food discoveries await</p>
         <form onSubmit={this.onSubmit} name="new-user-form" id="new-user-form" className="new-user-form">
           <div className="form-group">
             <label htmlFor="usr">Email</label>

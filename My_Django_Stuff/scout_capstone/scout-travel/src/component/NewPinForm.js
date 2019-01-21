@@ -66,7 +66,7 @@ class NewPinForm extends Component {
                           "WI",
                           "WV",
                           "WY",
-                          "Other"],
+                          "Europe", "Asia", "South America", "Antarctica", "Africa", "Australia"],
       details: '',
       business: '',
       city: '',
@@ -164,7 +164,7 @@ class NewPinForm extends Component {
 
   render() {
     return (
-      <div className="form-div">
+      <div className="form-div pin-form">
       <h3 className='login'>N<img src="https://image.flaticon.com/icons/svg/761/761952.svg" alt="donut icon" className="donut"/>sher Pin</h3>
         <form onSubmit={this.onSubmit} ref={this.form} name="new-pin-form" id="new-pin-form" className="new-pin-form" encType='multipart/form-data' >
           <div className="form-group new">
@@ -185,8 +185,8 @@ class NewPinForm extends Component {
 
             <div className="form-group new col">
               <label htmlFor="exampleFormControlSelect1">State</label>
-                <select className="form-control state" size="1" name="state" onChange={this.onFormChange} id="exampleFormControlSelect1">
-                   {this.renderStates()}
+                <select className="form-control state" size={2} name="state"  onChange={this.onFormChange} id="exampleFormControlSelect1">
+                  {this.renderStates()}
                 </select>
             </div>
           </div>
