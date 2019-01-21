@@ -23,18 +23,18 @@ class MyPinsList extends Component {
 
         axios.get(URL, { headers: { Authorization: `Token ${document.cookie}`}})
           .then((response) => {
-            const pins = response.data.pin.map((pi) => {
+            const pins = response.data.pin.map((pin) => {
               const newPin = {
-                ...pi,
-                id: pi.id,
-                image: pi.image,
-                details: pi.details,
-                city: pi.city,
-                state: pi.state,
-                business: pi.business,
-                dish: pi.dish,
-                user: pi.user,
-                likes: pi.likes,
+                ...pin,
+                id: pin.id,
+                image: pin.image,
+                details: pin.details.charAt(0).toUpperCase() + pin.details.slice(1),
+                city: pin.city.charAt(0).toUpperCase() + pin.city.slice(1),
+                state: pin.state.toUpperCase(),
+                dish: pin.dish.charAt(0).toUpperCase() + pin.dish.slice(1),
+                business: pin.business.charAt(0).toUpperCase() + pin.business.slice(1),
+                likes: pin.likes,
+                user: pin.user,
               };
             return newPin;
             })
@@ -69,7 +69,7 @@ class MyPinsList extends Component {
              });
 
             this.state.myPinList.splice(selectedPin, 1)
-            
+
             this.setState({
               myPinList: this.state.myPinList,
             })
@@ -90,17 +90,11 @@ class MyPinsList extends Component {
         const myPinList = this.state.myPinList.map((pin, i) => {
         return <PinPostCard
               key={i}
-
               likesCountCallback={() => this.props.incrementLikes(pin)}
               pinToBoardCallback={() => this.removePinFromBoard(pin)}
               pinButton={'Remove'}
-
-              // detailsLikeCallback={() => this.incrementLikes(pin.id)}
-              // detailsPageCallback={() => this.detailsPageCallback(pin)}
               detailsPageCallback={() => this.props.detailsPageCallback(pin)}
-              heartFilledSrc={this.props.heartFilledSrc}
 
-              // commentCallback: PropTypes.func,
               {...pin}
              />
         });
@@ -122,8 +116,8 @@ MyPinsList.propTypes = {
   incrementLikes: PropTypes.func,
   detailsLikesCountCallback: PropTypes.func,
   token: PropTypes.string,
-  heartFilledSrc: PropTypes.string,
-  // pinToBoardCallback: PropTypes.func,
+  pinToBoardCallback: PropTypes.func,
+  pinButton: PropTypes.string
 };
 
 export default MyPinsList;

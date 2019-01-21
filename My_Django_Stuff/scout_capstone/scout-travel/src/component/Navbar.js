@@ -3,8 +3,15 @@ import './Navbar.css'
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
 
-
 const Navbar = (props) => {
+
+  let userName = window.localStorage.getItem('name')
+
+  if (userName != null) {
+     userName = userName.charAt(0).toUpperCase() + userName.slice(1)
+  } else {
+    userName = 'Nosher'
+  }
 
 return (
   <div className="nav-body">
@@ -17,11 +24,11 @@ return (
         <div className={props.collapseNavbar} id="navbarSupportedContent" >
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-            <Link className="nav-link" to="/nosher" onClick={props.viewBoard}>All Pins</Link>
+            <Link className="nav-link pins" to="/nosher" onClick={props.viewBoard}>All Pins</Link>
             </li>
             <li className={props.dropdownClassName} >
               <p className="nav-link dropdown-toggle" href="/nosher" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded={props.expandDropdown} onClick={props.dropdown}>
-                Nosh Ambassador Profile
+               {userName} Ambassador Profile
               </p>
               <div className={props.dropdownShow} aria-labelledby="navbarDropdown">
                 <p className="dropdown-item" onClick={props.closeNav}>{props.logout}</p>
@@ -33,7 +40,7 @@ return (
             </li>
           </ul>
           <form className="form-inline my-2 my-lg-0 searchInput">
-            <input className="form-control mr-sm-2" name="query" type="search" placeholder="Search" aria-label="Search" value={props.searchQueryValue} onChange={props.searchQueryonChange}/>
+            <input className="form-control mr-sm-2" name="query" type="search" placeholder="Search by City" aria-label="Search" value={props.searchQueryValue} onChange={props.searchQueryonChange}/>
             <button className="btn btn-outline-danger text-white my-2 my-sm-0 search" onClick={props.searchQuery} type="submit">{props.searchLink}</button>
           </form>
         </div>

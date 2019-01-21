@@ -2,53 +2,45 @@ import React, { Component } from 'react';
 import './Details.css'
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 // import GoogleMaps from './GoogleMaps'
-const URL = "http://127.0.0.1:8000/api/pin/pin/"
 
-class Details extends Component {
-      constructor(props) {
-        super(props);
+class MyBoardDetails extends Component {
+  constructor(props) {
+    super(props);
 
-        this.state = {
-          pin: null,
-        }
-      }
-
-      componentDidMount() {
-        if (this.props.selectedPin === undefined) {
-          axios.get(URL + this.props.pinId, { headers: { Authorization: `Token ${document.cookie}`}})
-          .then((response) => {
-            this.setState({
-              pin: response.data
-            })
-          })
-        }
-      }
+    this.state = {
+      pin: null,
+      // isRevealed: false,
+    }
+  }
 
 
-      pinToBoard = (pin) => {
-        const userId = parseInt(window.localStorage.getItem('id'));
-        const URL = `http://127.0.0.1:8000/api/board/board/${userId}/pins/${pin.id}/add/`
+  componentDidMount() {
+    const URL = "http://127.0.0.1:8000/api/pin/pin/"
 
-          const apiPayload = {
-            pin: [pin],
-            user: userId,
-          }
+    if (this.props.selectedPin === undefined) {
+      axios.get(URL + this.props.pinId, { headers: { Authorization: `Token ${document.cookie}`}})
+      .then((response) => {
 
-          axios.post(URL, apiPayload, { headers: {Authorization: `Token ${document.cookie}`}})
-          .then((response) => {
-            console.log(response)
-            // What should we do when we know the post request worked?
-          })
-          .catch((error) => {
-            // What should we do when we know the post request failed?
-            this.setState({
-              errorMessage: `Failure ${error.message}`,
-            })
-          });
-        }
+        console.log(response);
+        this.setState({
+          pin: response.data
+        })
+      })
+    }
 
+    // if (this.props.selectedPin === undefined) {
+    //   axios.get(URL + this.props.pinId + '/details/', { data: { user : userId} }, { headers: { Authorization: `Token ${document.cookie}`}})
+    //   .then((response) => {
+    //     console.log(response);
+    //     this.setState({
+    //       pin: response.data
+    //     })
+    //   })
+    // }
+  }
 
 
 render() {
@@ -59,8 +51,8 @@ render() {
       <div className="container fixed">
         <div className="row">
           <div className="col-12 col-sm-6 img-fluid img-responsive">
-            <img src={pin.image} alt="Snow" className="image-fix"/>
-            <button className="top-right btn btn-danger pin-btn detail-btn" onClick={() => this.pinToBoard(pin)}>Pin</button>
+            <img src={pin.image} alt={pin.dish} className="image-fix"/>
+            <Link to="/mynosherboard" className="top-right btn btn-danger" onClick={() => this.props.goBack()}>Back</Link>
           </div>
           <div className="col-12 col-sm-6">
             <div className="container">
@@ -94,14 +86,13 @@ render() {
 
 
 
-Details.propTypes = {
+MyBoardDetails.propTypes = {
   likesCountCallback: PropTypes.func,
   commentCallback: PropTypes.func,
   pinSelected: PropTypes.object,
-  heartFilledSrc: PropTypes.string,
   incrementLikes: PropTypes.func,
   backButton: PropTypes.func,
 }
 
 
-export default Details;
+export default MyBoardDetails;

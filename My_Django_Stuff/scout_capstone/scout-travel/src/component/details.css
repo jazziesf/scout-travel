@@ -29,7 +29,9 @@
 
 .dish-detail {
   color: black;
-  font-family: 'Berkshire Swash', cursive;
+  font-family: 'Pacifico', cursive;
+
+  /* font-family: 'Berkshire Swash', cursive; */
   text-align: left;
   font-size: 1.5em;
   margin-bottom: 0;

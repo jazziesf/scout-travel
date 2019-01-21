@@ -21,7 +21,14 @@
 }
 
 .login {
-  font-family: 'Berkshire Swash', cursive;
+  /* font-family: 'Berkshire Swash', cursive; */
+  font-family: 'Pacifico', cursive;
+}
+
+.login-p {
+  font-family: 'ZCOOL XiaoWei', serif;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 @media screen and (max-width: 500px) {
@@ -40,7 +47,8 @@
 
 .new-user-form--submit {
   float: right;
-  font-family: 'Berkshire Swash', cursive;
+  font-family: 'Pacifico', cursive;
+  /* font-family: 'Berkshire Swash', cursive; */
 }
 
 .new-user {

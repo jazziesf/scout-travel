@@ -42,7 +42,8 @@ class ReturningUser extends Component {
       this.setState({
         name: response.data.name
       })
-      this.props.nameCallback(response.data.name)
+      const userName = window.localStorage.setItem('name', response.data.name)
+      this.props.nameCallback(userName)
 
       this.resetState()
     })
@@ -92,7 +93,8 @@ class ReturningUser extends Component {
   render() {
     return (
       <div className="form-div new-user">
-      <h3 className='login'>Sc<img src="https://image.flaticon.com/icons/svg/214/214298.svg" alt="donut icon" className="donut"/>ut Ambassad<img src="https://image.flaticon.com/icons/svg/761/761952.svg" alt="donut icon" className="donut"/>r</h3>
+      <h3 className='login'>N<img src="https://image.flaticon.com/icons/svg/214/214298.svg" alt="donut icon" className="donut"/>sher Ambassad<img src="https://image.flaticon.com/icons/svg/761/761952.svg" alt="donut icon" className="donut"/>r</h3>
+        <p className="login-p">Hurry up and Log-In, new food discoveries await</p>
         <form onSubmit={this.onSubmit} name="new-user-form" id="new-user-form" className="new-user-form">
           <div className="form-group">
             <label htmlFor="usr">Email</label>

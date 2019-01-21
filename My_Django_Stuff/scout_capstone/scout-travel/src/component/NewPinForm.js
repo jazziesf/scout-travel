@@ -11,6 +11,62 @@ class NewPinForm extends Component {
     this.form = React.createRef();
 
     this.state = {
+      usaStates: [ "AK",
+                          "AL",
+                          "AR",
+                          "AS",
+                          "AZ",
+                          "CA",
+                          "CO",
+                          "CT",
+                          "DC",
+                          "DE",
+                          "FL",
+                          "GA",
+                          "GU",
+                          "HI",
+                          "IA",
+                          "ID",
+                          "IL",
+                          "IN",
+                          "KS",
+                          "KY",
+                          "LA",
+                          "MA",
+                          "MD",
+                          "ME",
+                          "MI",
+                          "MN",
+                          "MO",
+                          "MS",
+                          "MT",
+                          "NC",
+                          "ND",
+                          "NE",
+                          "NH",
+                          "NJ",
+                          "NM",
+                          "NV",
+                          "NY",
+                          "OH",
+                          "OK",
+                          "OR",
+                          "PA",
+                          "PR",
+                          "RI",
+                          "SC",
+                          "SD",
+                          "TN",
+                          "TX",
+                          "UT",
+                          "VA",
+                          "VI",
+                          "VT",
+                          "WA",
+                          "WI",
+                          "WV",
+                          "WY",
+                          "Other"],
       details: '',
       business: '',
       city: '',
@@ -37,20 +93,27 @@ class NewPinForm extends Component {
     });
   }
 
+
+  renderStates = () => {
+      return this.state.usaStates.map((state, i) => {
+        return <option value={state} key={i}>{state}</option>
+      })
+    }
+
+
   onFormChange = (event) => {
     const field = event.target.name;
     const value = event.target.value;
 
     const updatedState = {};
-    updatedState[field] = value;
-    updatedState[0].toUpperCase()
+    updatedState[field] = value.charAt(0).toUpperCase()+ value.slice(1);
+
     this.setState(updatedState);
   }
 
 
   addPin = (newPin) => {
-    console.log(newPin);
-    const form = this.form.current;
+    const form = this.form.current
 
     const data = new FormData(form)
 
@@ -102,7 +165,7 @@ class NewPinForm extends Component {
   render() {
     return (
       <div className="form-div">
-      <h3 className='login'>Sc<img src="https://image.flaticon.com/icons/svg/214/214298.svg" alt="donut icon" className="donut"/>ut N<img src="https://image.flaticon.com/icons/svg/761/761952.svg" alt="donut icon" className="donut"/>sh Pin</h3>
+      <h3 className='login'>N<img src="https://image.flaticon.com/icons/svg/761/761952.svg" alt="donut icon" className="donut"/>sher Pin</h3>
         <form onSubmit={this.onSubmit} ref={this.form} name="new-pin-form" id="new-pin-form" className="new-pin-form" encType='multipart/form-data' >
           <div className="form-group new">
             <label htmlFor="usr">What the Dish?</label>
@@ -114,14 +177,18 @@ class NewPinForm extends Component {
             <input type="text" className="form-control" id="usr" name="business" placeholder="Bongo's Cuban Cafe" onChange={this.onFormChange} value={this.state.business} />
           </div>
 
-          <div className="form-group new">
-            <label htmlFor="usr">City</label>
-            <input type="text" className="form-control" id="usr" name="city" placeholder="Seattle, WA" onChange={this.onFormChange} value={this.state.city} />
-          </div>
+          <div className="form-row">
+            <div className="form-group new col-7">
+              <label htmlFor="usr">City</label>
+              <input type="text" className="form-control" id="usr" name="city" placeholder="Seattle" onChange={this.onFormChange} value={this.state.city} />
+            </div>
 
-          <div className="form-group new">
-            <label htmlFor="usr">State</label>
-            <input type="text" className="form-control" id="usr" name="state" placeholder="Seattle, WA" onChange={this.onFormChange} value={this.state.state} />
+            <div className="form-group new col">
+              <label htmlFor="exampleFormControlSelect1">State</label>
+                <select className="form-control state" size="1" name="state" onChange={this.onFormChange} id="exampleFormControlSelect1">
+                   {this.renderStates()}
+                </select>
+            </div>
           </div>
 
           <div className="form-group new">

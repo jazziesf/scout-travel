@@ -28,11 +28,11 @@ class AllPinsList extends Component {
           ...pin,
           id: pin.id,
           image: pin.image,
-          details: pin.details,
-          city: pin.city,
-          state: pin.state,
-          dish: pin.dish,
-          business: pin.business,
+          details: pin.details.charAt(0).toUpperCase() + pin.details.slice(1),
+          city: pin.city.charAt(0).toUpperCase() + pin.city.slice(1),
+          state: pin.state.toUpperCase(),
+          dish: pin.dish.charAt(0).toUpperCase() + pin.dish.slice(1),
+          business: pin.business.charAt(0).toUpperCase() + pin.business.slice(1),
           likes: pin.likes,
         };
         return newPin;
@@ -63,6 +63,15 @@ class AllPinsList extends Component {
       axios.post(URL, apiPayload, { headers: {Authorization: `Token ${document.cookie}`}})
       .then((response) => {
         console.log(response)
+        const selectedPin = this.state.pinList.findIndex((item) => {
+             return item.id === pin.id;
+         });
+
+        this.state.pinList.splice(selectedPin, 1)
+
+        this.setState({
+          pinList: this.state.pinList,
+        })
         // What should we do when we know the post request worked?
       })
       .catch((error) => {

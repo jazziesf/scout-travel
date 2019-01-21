@@ -16,10 +16,10 @@ return (
         <div className={props.collapseNavbar} id="navbarSupportedContent" >
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <p className="nav-link">{props.login}</p>
+              <p className="nav-link guest" onClick={props.closeNav}>{props.login}</p>
             </li>
             <li className="nav-item active">
-              <p className="nav-link">{props.signUp}</p>
+              <p className="nav-link guest" onClick={props.closeNav}>{props.signUp}</p>
             </li>
           </ul>
         </div>

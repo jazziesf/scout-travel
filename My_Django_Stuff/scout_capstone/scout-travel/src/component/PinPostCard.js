@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 
 const PostCard = (props) => {
-
     return (
       // <div className="col-xs-12 col-md-4 col-sm-6 img-fluid img-responsive">
       <div >
@@ -16,7 +15,7 @@ const PostCard = (props) => {
         </div>
 
         <div className="icons">
-          <img src={props.heartFilledSrc} alt="like heart" className="heart" onClick={props.likesCountCallback}/>
+          <img src='https://image.flaticon.com/icons/svg/126/126471.svg' alt="like heart" className="heart" onClick={props.likesCountCallback}/>
           <img src="https://image.flaticon.com/icons/svg/54/54761.svg" alt="comment" className="comment" onClick={props.commentCallback}/>
           <img src="https://image.flaticon.com/icons/svg/149/149403.svg" alt="details icon" className="details" onClick={props.detailsPageCallback}/>
         </div>
@@ -31,11 +30,6 @@ const PostCard = (props) => {
   PostCard.propTypes = {
     id: PropTypes.number,
     pin: PropTypes.object,
-    // image: PropTypes.string,
-    // company: PropTypes.string,
-    // name: PropTypes.string,
-    // city: PropTypes.string,
-    // state: PropTypes.string,
     pinButton: PropTypes.string,
     heartFilledSrc: PropTypes.string,
     likes: PropTypes.number,

@@ -51,9 +51,16 @@
 
 .new-pin-form--submit {
   float: right;
-  font-family: 'Berkshire Swash', cursive;
+  font-family: 'Pacifico', cursive;
+
+  /* font-family: 'Berkshire Swash', cursive; */
+}
+
+.state {
+  height: 38.5px !important;
 }
 
 #exampleInputFile {
-  font-family: 'Berkshire Swash', cursive, sans-serif;
+  font-family: 'Pacifico', cursive;
+  /* font-family: 'Berkshire Swash', cursive, sans-serif; */
 }

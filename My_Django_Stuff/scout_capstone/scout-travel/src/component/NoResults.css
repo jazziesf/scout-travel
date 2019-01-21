@@ -1,0 +1,21 @@
+.background {
+  background: url("https://static1.squarespace.com/static/5851b82420099ec51faf0638/5852af61bebafb83380d2074/59552ab7d482e9ea186ceec6/1499274168317/CUPS.jpg?format=2500w") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  height: 100vh;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.75em;
+  padding: 50px;
+  border: 6px solid black;
+  font-family: 'Pacifico', cursive;
+  color: black;
+  background-color: white;
+}

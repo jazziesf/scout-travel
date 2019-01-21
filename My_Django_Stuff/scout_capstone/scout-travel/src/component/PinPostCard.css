@@ -18,7 +18,8 @@ this needs to be added to body of where the cards are being posted
   margin-bottom: 0px;
   padding-left: 18px;
   font-size: 1.15em;
-  font-family: 'Berkshire Swash', cursive;
+  /* font-family: 'Berkshire Swash', cursive; */
+  font-family: 'Pacifico', cursive;
 }
 
 img {

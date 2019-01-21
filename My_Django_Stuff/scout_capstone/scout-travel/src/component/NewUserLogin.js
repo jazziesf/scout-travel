@@ -100,7 +100,8 @@ class NewUserLogin extends Component {
     return (
       <div className="form-div new-user">
 
-      <h3 className='login'>New Sc<img src="https://image.flaticon.com/icons/svg/214/214298.svg" alt="donut icon" className="donut"/>ut Ambassad<img src="https://image.flaticon.com/icons/svg/761/761952.svg" alt="donut icon" className="donut"/>r</h3>
+      <h3 className='login'>N<img src="https://image.flaticon.com/icons/svg/214/214298.svg" alt="donut icon" className="donut"/>sher Sign-In</h3>
+      <p className="login-p"> This is just the beginning to discovering great eats!</p>
         <form onSubmit={this.onSubmit} name="new-user-form" id="new-user-form" className="new-user-form">
           <div className="form-group">
             <label htmlFor="usr">Email</label>

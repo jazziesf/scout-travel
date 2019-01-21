@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Navbar from './component/Navbar'
 // import Card from './component/card'
-import Details from './component/details'
+import Details from './component/Details'
+import MyBoardDetails from './component/MyBoardDetails'
 import AllPinsList from './component/AllPinsList'
 import NewPinForm from './component/NewPinForm'
 import MyPinsList from './component/MyBoardPins'
@@ -12,8 +13,8 @@ import { Route, Redirect } from 'react-router'
 import PinPostCard from './component/PinPostCard'
 import StackGrid from "react-stack-grid";
 import NavbarGuest from './component/NavbarGuest'
-
 import Splash from './component/Splash'
+import NoResults from './component/NoResults'
 // import PinPostCard from './component/ReturningUser'
 
 import { BrowserRouter as Router, Link } from "react-router-dom";
@@ -31,8 +32,6 @@ class App extends Component {
       isRevealed: false,
       pinList: [],
       currentPin: undefined,
-      heart: 'https://image.flaticon.com/icons/svg/126/126471.svg',
-      updated: false,
       likes: 0,
       loggedIn: false,
       successfulRequest: false,
@@ -43,32 +42,18 @@ class App extends Component {
     };
   }
 
-  // incrementLikes = (pinId) => { //add PinId when you add backend
-  //   // const liked = this.state.liked;
-  //   console.log(pinId);
-  //   const selectedPin = this.state.pinList.find((pin) => {
-  //     console.log(pin);
-  //       return pin.id === pinId;
-  //   });
-  //       if (selectedPin) {
-  //         this.setState({
-  //           likesCount: this.state.likesCount + 1,
-  //           liked: true
-  //         });
-  //       }
-  //    }
+  decreaseLikes = () => {
+      this.setState({
+        likesCount: this.state.likesCount - 1
+      });
+    }
 
 
-  // decreaseLikes = () => {
-  //     this.setState({
-  //       likesCount: this.state.likesCount - 1
-  //     });
-  //   }
-  nameCallback = (name) => {
-    this.setState({
-      name: name
-    })
-  }
+  // nameCallback = (name) => {
+  //   this.setState({
+  //     name: name
+  //   })
+  // }
 
   onSearch = (params) => {
     params.toLowerCase()
@@ -98,7 +83,6 @@ class App extends Component {
           };
           return newPin;
         })
-        // .filter((pin, index) => index < 10);
         this.setState({
           pinList: pins,
           isActive: false,
@@ -117,6 +101,7 @@ class App extends Component {
 
   }
 
+  // Navbar event handles
   toggleHamburgerMenu() {
     const currentState = this.state.isOpen
     this.setState({
@@ -142,21 +127,19 @@ class App extends Component {
     });
   };
 
+  // add likes for each pin
   incrementLikes = (pinId) => {
-
     const { pinList } = this.state
 
-    if(!this.state.updated) {
+    if(pinId) {
       this.setState({
           likes: pinId.likes += 1,
           pinList: pinList,
-          // heart: "https://image.flaticon.com/icons/svg/69/69904.svg"
       });
     } else {
       this.setState({
           likes: pinId.likes -= 1,
           pinList: pinList,
-          // heart: "https://image.flaticon.com/icons/svg/126/126471.svg"
         });
       }
 
@@ -178,6 +161,8 @@ class App extends Component {
     });
   }
 
+
+  // call details page for all pins with a addpin to myboard callback
   detailsPageCallback = (pin) => {
     this.setState({
       currentPin: pin,
@@ -187,15 +172,29 @@ class App extends Component {
     });
   }
 
+  // call details page for myboard pin with a remove pin callback
+  myDetailsPageCallback = (pin) => {
+    this.setState({
+      currentPin: pin,
+      isRevealed: true,
+      isActive: false,
+      isOpen: false,
+    });
+  }
+
+  // controll log-in views with the presence of document cookies
   onLoggedIn = (token) => {
     if (document.cookie !== '') {
     // userId = window.localStorage.setItem('id', response.data.id)
       this.setState({
         loggedIn: true,
+        isActive: false,
+        isOpen: false,
       })
     }
   }
 
+  // log out function with a redirect to home page
   logOut = () => {
     localStorage.clear()
     document.cookie = ''
@@ -205,14 +204,17 @@ class App extends Component {
     })
   }
 
+  // render allpin page if log-in is successful with state change
   onSuccessfulRequest = () => {
     this.setState({
       successfulRequest: true,
     })
-    console.log(this.state.successfulRequest)
+    this.setState({
+      successfulRequest: false,
+    })
   }
 
-
+  // render allpin page if log-in is successful with state change
   viewBoard = () => {
     this.setState({
       isRevealed: false,
@@ -221,12 +223,13 @@ class App extends Component {
     });
   }
 
+  // last 3 method hand search query event
   onFormChange = (event) => {
     const field = event.target.name;
     const value = event.target.value;
 
     const updatedState = {};
-    updatedState[field] = value;
+    updatedState[field] = value.charAt(0).toUpperCase()+ value.slice(1);
     this.setState(updatedState);
   }
 
@@ -237,9 +240,9 @@ class App extends Component {
   }
 
   onSubmit = (event) => {
-    if(event.charCode === 13 ){
-    console.log('enter press here! ')
-    }
+    // if(event.charCode === 13 ){
+    // console.log('enter press here! ')
+    // }
     event.preventDefault();
     const { query } = this.state;
 
@@ -259,19 +262,13 @@ class App extends Component {
     const dropdown2 = this.state.isActive ? "dropdown-menu show" : "dropdown-menu"
     const dropdown3 = this.state.isActive ? "true" : "false"
 
-
     const pinList = this.state.pinList.map((pin) => {
       return <PinPostCard
       key={pin.id}
       pinButton={"Pin"}
       likesCountCallback={() => this.incrementLikes(pin)}
-
       pinToBoardCallback={() => this.pinToBoard(pin)}
-
       detailsPageCallback={() => this.detailsPageCallback(pin)}
-      heartFilledSrc={this.state.heart}
-
-      // commentCallback: PropTypes.func,
       {...pin}
       />
     })
@@ -303,7 +300,8 @@ class App extends Component {
           dropdown={(event) => this.toggleDropdown(event)}
           hamburgerMenu={() => this.toggleHamburgerMenu()}
           collapseNavbar={show}
-          signUp={<Link to="/noshernewuser">Nosh Ambassador Sign-Up</Link>}
+          closeNav={(event) => this.closeNavBar(event)}
+          signUp={<Link to="/noshernewuser" >Nosher Ambassador Sign-Up</Link>}
           login={<Link to="/nosherlogin" >Log-In</Link>}
           />
         )}
@@ -311,79 +309,88 @@ class App extends Component {
 
           <Route path="/searchresults" render={() => (
               this.state.isRevealed ? (
-                <Redirect to="/nosherdetails"/>
+                <Redirect to={`/nosherdetails/${this.state.currentPin.id}`}/>
               ) : (
               this.state.results ? (
                 <StackGrid columnWidth={400} >
                    {pinList}
                  </StackGrid>
                ) : (
-                <div className='center'>
-                 <p className='search-results'>Look's Like there are places to be discovered. Be the first to Scout this Area!</p>
-                </div>
+                 <NoResults >
+                </NoResults >
                )
              )
            )}/>
 
-        <Route path="/nosherdetails"
-          render={() =>
-            <Details
-              pinSelected={this.state.currentPin}
-              likesCountCallback={(pinId) => this.incrementLikes(pinId)}
-              commentCallback={()=> this.commentView}
-              incrementLikes={(pinId) => this.incrementLikes(pinId)}
-              heartFilledSrc={this.state.heart}
-              pinButton={"Pin"}
-              backButton={() => this.backButton()}
-            />
-           }
-         />
-
-        {/*  <Route path="/scout"
-          render={() =>
-            <AllPinsList
-              // likesCountCallback={this.likesCountCallback}
-              selectPinCallback={(pinId) => this.onSelectPin(pinId)} //check APPMOCKFINAL this one should work with pin.id
-              detailsPageCallback={this.detailsPageCallback} //this may not work beacuse you need an id
-           /> }
-         />  */}
-
          <Route path="/nosher" render={() => (
              this.state.isRevealed ? (
-               <Redirect to="/nosherdetails"/>
+               <Redirect to={`/nosherdetails/${this.state.currentPin.id}`}/>
              ) : (
                <div>
                <AllPinsList
-                 // likesCountCallback={this.likesCountCallback}
-                 selectPinCallback={(pinId) => this.onSelectPin(pinId)} //check APPMOCKFINAL this one should work with pin.id
-                 detailsPageCallback={this.detailsPageCallback} //this may not work beacuse you need an id
+                 selectPinCallback={(pinId) => this.onSelectPin(pinId)}
+                 detailsPageCallback={this.detailsPageCallback}
                  incrementLikes={(pinId) => this.incrementLikes(pinId)}
-                 heartFilledSrc={this.state.heart}
-
               />
               </div>
 
             )
           )}/>
 
+        <Route path="/nosherdetails/:id"
+          render={(props) => {
+            const pinId = props.match.params.id
+            const selectedPin = this.state.pinList.find((item) => {
+                  return item.id === pinId;
+              });
+
+            return <Details
+              pinId={pinId}
+              pinSelected={selectedPin}
+              likesCountCallback={(pinId) => this.incrementLikes(pinId)}
+              commentCallback={()=> this.commentView}
+              incrementLikes={(pinId) => this.incrementLikes(pinId)}
+              backButton={() => this.backButton()}
+            /> }
+           }
+         />
+
          <Route path="/splash"
             render={() => (  <Splash /> ) } />
 
-
-
           <Route path="/mynosherboard" render={() =>
               this.state.isRevealed ? (
-                <Redirect to="/nosherdetails"/>
+                <Redirect to={`/mynosherpindetails/${this.state.currentPin.id}`}/>
               ) : (
               <MyPinsList
-              // likesCountCallback={this.likesCountCallback}
-              selectPinCallback={(pinId) => this.onSelectPin(pinId)} //check APPMOCKFINAL this one should work with pin.id
-              detailsPageCallback={this.detailsPageCallback} //this may not work beacuse you need an id
+              selectPinCallback={(pinId) => this.onSelectPin(pinId)}
+              detailsPageCallback={this.myDetailsPageCallback}
               incrementLikes={(pinId) => this.incrementLikes(pinId)}
-              heartFilledSrc={this.state.heart}
               />
             )}
           />
+
+         <Route path="/mynosherpindetails/:id"
+           render={(props) => {
+             const pinId = props.match.params.id
+             const selectedPin = this.state.pinList.find((item) => {
+                   return item.id === pinId;
+               });
+
+             return <MyBoardDetails
+               pinId={pinId}
+               pinSelected={selectedPin}
+               likesCountCallback={(pinId) => this.incrementLikes(pinId)}
+               commentCallback={()=> this.commentView}
+               incrementLikes={(pinId) => this.incrementLikes(pinId)}
+               backButton={() => this.backButton()}
+             /> }
+            }
+          />
+
+
+
+
 
           <Route path="/noshernewuser" render={() => (
               this.state.loggedIn ? (
@@ -418,16 +425,6 @@ class App extends Component {
              <NewPinForm successfullRequestCallback={this.onSuccessfulRequest}/>
           )
         )}/>
-
-
-      {/*  <Route path="/addscoutpin"
-          render={() =>
-            <NewPinForm
-              addPinCallback={this.addPin}
-              token={this.state.token}
-            />
-          }
-        /> */}
 
 
         </div>

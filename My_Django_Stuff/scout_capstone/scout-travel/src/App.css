@@ -46,16 +46,7 @@
   cursor: pointer;
 }
 
-.center {
-    margin-top: 12%;
-    margin-left: 22.5%;
-    width: 60%;
-    border-style: outset;
-    padding: 40px;
-}
-
 .search-results {
-  font-family: 'Berkshire Swash', cursive;
+  font-family: 'Pacifico', cursive;
   font-size: 1.25em;
-
 }
